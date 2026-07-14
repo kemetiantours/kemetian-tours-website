@@ -1,273 +1,372 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="KemetianTours - Premium Egyptian travel experiences. Explore Cairo, Luxor, Aswan, and more with expert guides.">
-    <meta name="keywords" content="Egyptian tours, Cairo tours, Nile cruises, Egypt travel, Luxor, Aswan">
-    <meta name="author" content="KemetianTours">
-    <title>KemetianTours - Premium Egyptian Travel Experiences</title>
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/responsive.css">
-    
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kemetian Tours — Your Gateway to Unforgettable Egyptian Journeys</title>
+  <meta name="description" content="Kemetian Tours crafts authentic, expertly guided journeys across Egypt — from the Pyramids of Giza to the Nile, Luxor, Siwa and the Red Sea." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Kemetian Tours — Explore the Wonders of Egypt" />
+  <meta property="og:description" content="Exclusive tour packages, private excursions and unforgettable adventures across Egypt." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://kemetiantours.com/" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="navbar-brand">
-                <a href="index.html" class="logo">
-                    <i class="fas fa-pyramid"></i> KemetianTours
-                </a>
-            </div>
-            <div class="navbar-menu" id="navbarMenu">
-                <ul class="navbar-nav">
-                    <li><a href="index.html" class="nav-link active">Home</a></li>
-                    <li><a href="destinations.html" class="nav-link">Destinations</a></li>
-                    <li><a href="tours.html" class="nav-link">Tours</a></li>
-                    <li><a href="about.html" class="nav-link">About</a></li>
-                    <li><a href="contact.html" class="nav-link">Contact</a></li>
-                </ul>
-            </div>
-            <div class="navbar-toggle" id="navbarToggle">
-                <span></span>
-                <span></span>
-                <span></span>
-            </div>
-        </div>
-    </nav>
 
-    <!-- Hero Section -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============ HEADER ============ -->
+  <header class="site-header" data-header>
+    <div class="container header__inner">
+      <a href="#" class="header__brand" aria-label="Kemetian Tours home">
+        <img src="https://kemetiantours.com/wp-content/uploads/2026/05/KEMETIAN-LOGO-300x225.png" alt="Kemetian Tours logo" class="header__logo" width="72" height="54" />
+        <span class="header__name">Kemetian<em>Tours</em></span>
+      </a>
+
+      <nav class="header__nav" id="primary-nav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a href="#destinations" class="nav__link">Destinations</a></li>
+          <li><a href="#experiences" class="nav__link">Experiences</a></li>
+          <li><a href="#booking" class="nav__link">How It Works</a></li>
+          <li><a href="#faq" class="nav__link">FAQ</a></li>
+          <li><a href="#contact" class="nav__link nav__link--cta">Book Your Tour</a></li>
+        </ul>
+      </nav>
+
+      <button class="header__toggle" data-nav-toggle aria-expanded="false" aria-controls="primary-nav" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ============ HERO ============ -->
     <section class="hero">
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-            <h1 class="hero-title">Discover Egypt's Wonders</h1>
-            <p class="hero-subtitle">Experience the magic of ancient civilizations</p>
-            <a href="tours.html" class="btn btn-primary btn-lg">Explore Tours</a>
+      <div class="hero__media" aria-hidden="true">
+        <img src="https://kemetiantours.com/wp-content/uploads/2025/11/pyramid-of-giza-KXRE6F3.jpg" alt="" loading="eager" fetchpriority="high" />
+      </div>
+      <div class="container hero__content" data-reveal>
+        <p class="eyebrow">Travel &amp; Tour Agency · Egypt</p>
+        <h1 class="hero__title">Your Gateway to <span class="accent">Unforgettable</span> Journeys</h1>
+        <p class="hero__lead">
+          Explore the timeless wonders of the Nile through expertly curated journeys —
+          from the majesty of the Pyramids to the hidden gems of the Red Sea,
+          every trip is tailored to you.
+        </p>
+        <div class="hero__actions">
+          <a href="#contact" class="btn btn--primary">Book Your Expedition</a>
+          <a href="#destinations" class="btn btn--ghost">Explore Destinations</a>
         </div>
+        <ul class="hero__badges" role="list">
+          <li>Iconic Egyptian Destinations</li>
+          <li>Bespoke Travel Packages</li>
+          <li>Local Egyptology Experts</li>
+          <li>Transparent &amp; Fair Pricing</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- Featured Destinations -->
-    <section class="destinations-preview">
-        <div class="container">
-            <div class="section-header">
-                <h2>Popular Destinations</h2>
-                <p>Choose from our carefully curated destinations</p>
-            </div>
-            
-            <div class="destinations-grid">
-                <!-- Cairo -->
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="images/cairo.jpg" alt="Cairo - Pyramids of Giza">
-                        <div class="destination-overlay">
-                            <a href="destinations.html#cairo" class="btn btn-small">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="destination-info">
-                        <h3>Cairo</h3>
-                        <p>Home to the iconic Pyramids of Giza and the Sphinx</p>
-                        <div class="destination-meta">
-                            <span class="rating"><i class="fas fa-star"></i> 4.8/5</span>
-                            <span class="tours-count">45+ Tours</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Luxor -->
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="images/luxor.jpg" alt="Luxor - Valley of the Kings">
-                        <div class="destination-overlay">
-                            <a href="destinations.html#luxor" class="btn btn-small">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="destination-info">
-                        <h3>Luxor</h3>
-                        <p>Ancient Thebes with temples and the Valley of the Kings</p>
-                        <div class="destination-meta">
-                            <span class="rating"><i class="fas fa-star"></i> 4.9/5</span>
-                            <span class="tours-count">38+ Tours</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Aswan -->
-                <div class="destination-card">
-                    <div class="destination-image">
-                        <img src="images/aswan.jpg" alt="Aswan - Nile Cruise">
-                        <div class="destination-overlay">
-                            <a href="destinations.html#aswan" class="btn btn-small">Learn More</a>
-                        </div>
-                    </div>
-                    <div class="destination-info">
-                        <h3>Aswan</h3>
-                        <p>Beautiful Nile scenery and access to Nubian culture</p>
-                        <div class="destination-meta">
-                            <span class="rating"><i class="fas fa-star"></i> 4.7/5</span>
-                            <span class="tours-count">32+ Tours</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- ============ ABOUT ============ -->
+    <section class="section about" id="about">
+      <div class="container grid grid--2">
+        <figure class="about__figure" data-reveal>
+          <img src="https://kemetiantours.com/wp-content/uploads/2025/11/2023_01_02_13_17_IMG_0690-scaled.jpg" alt="Travelers exploring ancient Egyptian monuments" loading="lazy" />
+        </figure>
+        <div class="about__body" data-reveal>
+          <p class="eyebrow">Why Choose Kemetian Tours</p>
+          <h2>Ready to make your journey <span class="accent">truly meaningful</span>?</h2>
+          <p>
+            Kemetian Tours is a trusted travel agency dedicated to bringing you the most
+            authentic and immersive travel experiences across Egypt. We offer exclusive
+            tour packages, private excursions and unforgettable adventures designed to
+            showcase the timeless wonders of the Nile.
+          </p>
+          <p>
+            From the golden sands of the Giza Plateau to the tranquil waters of the Nile,
+            we craft seamless journeys that connect you with the myths, monuments and
+            vibrant culture of this historic land.
+          </p>
+          <a href="#experiences" class="btn btn--primary">See What Makes Us Different</a>
         </div>
+      </div>
     </section>
 
-    <!-- Why Choose Us -->
-    <section class="why-choose-us">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Choose KemetianTours?</h2>
-                <p>We provide unforgettable Egyptian experiences</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h3>Expert Guides</h3>
-                    <p>Knowledgeable local guides with years of experience</p>
-                </div>
+    <!-- ============ DESTINATIONS ============ -->
+    <section class="section section--dark destinations" id="destinations">
+      <div class="container">
+        <header class="section__head" data-reveal>
+          <p class="eyebrow">Top Rated Destinations</p>
+          <h2>Where will your <span class="accent">next adventure</span> take you?</h2>
+        </header>
 
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>Safety First</h3>
-                    <p>Your safety and comfort are our top priorities</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-tag"></i>
-                    </div>
-                    <h3>Best Prices</h3>
-                    <p>Competitive rates without compromising quality</p>
-                </div>
-
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-headset"></i>
-                    </div>
-                    <h3>24/7 Support</h3>
-                    <p>Round-the-clock customer support</p>
-                </div>
-            </div>
+        <div class="dest__grid">
+          <article class="dest-card dest-card--tall" data-reveal>
+            <img src="https://kemetiantours.com/wp-content/uploads/2025/11/2023_04_01_15_13_IMG_3271-768x1024.jpg" alt="Cairo, Egypt" loading="lazy" />
+            <div class="dest-card__label"><h3>Cairo</h3><p>The Great Capital of Egypt</p></div>
+          </article>
+          <article class="dest-card" data-reveal>
+            <img src="https://kemetiantours.com/wp-content/uploads/2025/11/2024_02_18_10_52_IMG_5045-768x1024.jpg" alt="Siwa Oasis, Egypt" loading="lazy" />
+            <div class="dest-card__label"><h3>Siwa</h3><p>Where Tradition Meets Serenity</p></div>
+          </article>
+          <article class="dest-card" data-reveal>
+            <img src="https://kemetiantours.com/wp-content/uploads/2025/11/MPNY1155-768x576.jpg" alt="The White Desert, Egypt" loading="lazy" />
+            <div class="dest-card__label"><h3>The White Desert</h3><p>Otherworldly Chalk Landscapes</p></div>
+          </article>
+          <article class="dest-card" data-reveal>
+            <img src="https://kemetiantours.com/wp-content/uploads/2025/11/2024_02_24_19_12_IMG_5469-768x1024.jpg" alt="Luxor, Egypt" loading="lazy" />
+            <div class="dest-card__label"><h3>Luxor</h3><p>The World's Greatest Open-Air Museum</p></div>
+          </article>
+          <article class="dest-card" data-reveal>
+            <img src="https://kemetiantours.com/wp-content/uploads/2025/11/2023_04_23_12_00_IMG_4441-768x576.jpg" alt="Aswan, Egypt" loading="lazy" />
+            <div class="dest-card__label"><h3>Aswan</h3><p>Gateway to Nubian Culture</p></div>
+          </article>
+          <article class="dest-card dest-card--tall" data-reveal>
+            <img src="https://kemetiantours.com/wp-content/uploads/2026/04/2026_02_11_11_09_39_IMG_8860-768x1024.webp" alt="Giza, Egypt" loading="lazy" />
+            <div class="dest-card__label"><h3>Giza</h3><p>Home of the Pyramids &amp; the Sphinx</p></div>
+          </article>
         </div>
+
+        <p class="dest__more" data-reveal>Also ask us about <strong>Faiyum</strong>, <strong>Dahab</strong> and the <strong>Red Sea</strong> coast.</p>
+      </div>
     </section>
 
-    <!-- Testimonials -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2>What Our Guests Say</h2>
-                <p>Real experiences from real travelers</p>
-            </div>
-            
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Amazing experience! The guides were knowledgeable and the itinerary was perfect."</p>
-                    <p class="testimonial-author">- Sarah Johnson, USA</p>
-                </div>
+    <!-- ============ EXPERIENCES / FEATURES ============ -->
+    <section class="section experiences" id="experiences">
+      <div class="container">
+        <header class="section__head" data-reveal>
+          <p class="eyebrow">Expertly Crafted</p>
+          <h2>Kemetian <span class="accent">Experiences</span></h2>
+          <p class="section__lead">
+            We don't just book trips — we craft unforgettable Egyptian experiences
+            tailored to your dreams, backed by deep local expertise and personal service.
+          </p>
+        </header>
 
-                <div class="testimonial-card">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Incredible value for money. Would definitely book again!"</p>
-                    <p class="testimonial-author">- Michael Chen, UK</p>
-                </div>
-
-                <div class="testimonial-card">
-                    <div class="testimonial-stars">
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <p class="testimonial-text">"Professional service from start to finish. Highly recommended!"</p>
-                    <p class="testimonial-author">- Emma Wilson, Australia</p>
-                </div>
-            </div>
+        <div class="grid grid--3 features">
+          <article class="feature" data-reveal>
+            <div class="feature__icon" aria-hidden="true">𓁹</div>
+            <h3>Expert Travel Advisors</h3>
+            <p>Our specialized team ensures your Egyptian expedition is stress-free, secure and meticulously planned.</p>
+          </article>
+          <article class="feature" data-reveal>
+            <div class="feature__icon" aria-hidden="true">𓋹</div>
+            <h3>Affordable &amp; Transparent Pricing</h3>
+            <p>No hidden costs — just exceptional value for your perfect Egyptian getaway.</p>
+          </article>
+          <article class="feature" data-reveal>
+            <div class="feature__icon" aria-hidden="true">𓆃</div>
+            <h3>24/7 Customer Support</h3>
+            <p>Enjoy peace of mind with round-the-clock assistance as you explore the wonders of Egypt.</p>
+          </article>
         </div>
+      </div>
     </section>
 
-    <!-- Call to Action -->
-    <section class="cta">
-        <div class="container">
-            <h2>Ready to Explore Egypt?</h2>
-            <p>Book your adventure today and create memories that last a lifetime</p>
-            <a href="contact.html" class="btn btn-primary btn-lg">Start Your Journey</a>
+    <!-- ============ CTA BANNER ============ -->
+    <section class="cta-banner">
+      <div class="container cta-banner__inner" data-reveal>
+        <div>
+          <h2>History is calling. <span class="accent">Will you answer?</span></h2>
+          <p>Seasonal, limited-time packages across the land of the Pharaohs. Don't just read about the past — walk through it.</p>
         </div>
+        <a href="#contact" class="btn btn--gold">Book Your Expedition Today</a>
+      </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About KemetianTours</h4>
-                    <p>Premium Egyptian travel experiences with expert guides and unforgettable adventures.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="destinations.html">Destinations</a></li>
-                        <li><a href="tours.html">Tours</a></li>
-                        <li><a href="about.html">About</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact Info</h4>
-                    <p>
-                        <i class="fas fa-phone"></i> +20 12 0413 7431<br>
-                        <i class="fas fa-envelope"></i> bookings@kemetiantours.com<br>
-                        <i class="fas fa-map-marker-alt"></i> Cairo, Egypt
-                    </p>
-                </div>
-                <div class="footer-section">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#" target="_blank" title="Facebook"><i class="fab fa-facebook"></i></a>
-                        <a href="#" target="_blank" title="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" target="_blank" title="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 KemetianTours. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <!-- ============ BOOKING STEPS ============ -->
+    <section class="section booking" id="booking">
+      <div class="container">
+        <header class="section__head" data-reveal>
+          <p class="eyebrow">Simple &amp; Stress-Free</p>
+          <h2>Book your next adventure in <span class="accent">just 4 steps</span></h2>
+          <p class="section__lead">
+            Your journey to the heart of Egypt should be as smooth as a sail down the Nile.
+          </p>
+        </header>
 
-    <!-- Scripts -->
-    <script src="scripts/main.js"></script>
+        <ol class="steps" role="list">
+          <li class="step" data-reveal>
+            <span class="step__num">1</span>
+            <h3>Select Your Experience</h3>
+            <p>Explore our curated collection of Egyptian journeys — from Nile cruises to desert adventures — and find the itinerary that speaks to you.</p>
+          </li>
+          <li class="step" data-reveal>
+            <span class="step__num">2</span>
+            <h3>Customize Your Trip</h3>
+            <p>Work with our Egypt experts to tailor the trip to your pace. Every detail is adjusted to match your personal preferences.</p>
+          </li>
+          <li class="step" data-reveal>
+            <span class="step__num">3</span>
+            <h3>Book &amp; Confirm</h3>
+            <p>Secure your journey with a simple payment. You'll receive a confirmation with your full itinerary and contact details.</p>
+          </li>
+          <li class="step" data-reveal>
+            <span class="step__num">4</span>
+            <h3>Travel &amp; Enjoy</h3>
+            <p>Pack your bags and step into history — our team supports you 24/7 from arrival to farewell.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section section--sand faq" id="faq">
+      <div class="container">
+        <header class="section__head" data-reveal>
+          <p class="eyebrow">Good to Know</p>
+          <h2>Everything you need to know <span class="accent">before you travel</span></h2>
+        </header>
+
+        <div class="tabs" data-tabs data-reveal>
+          <div class="tabs__list" role="tablist" aria-label="FAQ categories">
+            <button class="tabs__tab is-active" role="tab" aria-selected="true" aria-controls="panel-booking" id="tab-booking">Booking Process</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="panel-payment" id="tab-payment" tabindex="-1">Payment &amp; Refunds</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="panel-travel" id="tab-travel" tabindex="-1">Travel Requirements</button>
+            <button class="tabs__tab" role="tab" aria-selected="false" aria-controls="panel-trip" id="tab-trip" tabindex="-1">Trip Experience</button>
+          </div>
+
+          <div class="tabs__panel is-active" role="tabpanel" id="panel-booking" aria-labelledby="tab-booking">
+            <details class="qa" open>
+              <summary>How do I book a tour package?</summary>
+              <p>You can book through our website, by phone, or via WhatsApp. Select your package, provide traveler details, and make a payment to confirm.</p>
+            </details>
+            <details class="qa">
+              <summary>How far in advance should I book my trip?</summary>
+              <p>We recommend booking at least 2–3 months in advance to secure the best availability and rates.</p>
+            </details>
+            <details class="qa">
+              <summary>Will I receive a confirmation after booking?</summary>
+              <p>Yes — you'll receive a confirmation email with all travel details, including itinerary, payment receipt and contact information.</p>
+            </details>
+            <details class="qa">
+              <summary>Can I book for a group?</summary>
+              <p>Absolutely. We offer special rates and custom itineraries for group bookings — contact us for group travel arrangements.</p>
+            </details>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="panel-payment" aria-labelledby="tab-payment" hidden>
+            <details class="qa" open>
+              <summary>What payment methods do you accept?</summary>
+              <p>We accept major credit cards, bank transfers and online payment gateways. Some packages may allow installment plans.</p>
+            </details>
+            <details class="qa">
+              <summary>Is my payment refundable if I cancel my trip?</summary>
+              <p>Refund policies depend on the package. Some allow free cancellation within a certain period, while others may have a cancellation fee.</p>
+            </details>
+            <details class="qa">
+              <summary>Are there additional fees beyond the package price?</summary>
+              <p>Some tours may have optional add-ons, taxes or service fees. These are clearly stated before you confirm your booking.</p>
+            </details>
+            <details class="qa">
+              <summary>What happens if my refund is delayed?</summary>
+              <p>Refund processing times vary by payment method. If delayed, please reach out to customer service for an update.</p>
+            </details>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="panel-travel" aria-labelledby="tab-travel" hidden>
+            <details class="qa" open>
+              <summary>Do I need a visa for my trip?</summary>
+              <p>Visa requirements depend on your nationality. We can assist with visa applications if needed.</p>
+            </details>
+            <details class="qa">
+              <summary>What travel documents should I bring?</summary>
+              <p>Carry a valid passport, visa (if required), and printed copies of your booking confirmation.</p>
+            </details>
+            <details class="qa">
+              <summary>Can you assist with flight bookings?</summary>
+              <p>Yes — we offer flight booking services as part of our travel packages.</p>
+            </details>
+          </div>
+
+          <div class="tabs__panel" role="tabpanel" id="panel-trip" aria-labelledby="tab-trip" hidden>
+            <details class="qa" open>
+              <summary>Will I have a tour guide during my trip?</summary>
+              <p>Yes — most of our packages include professional local tour guides to enrich your experience.</p>
+            </details>
+            <details class="qa">
+              <summary>What happens if my flight is delayed?</summary>
+              <p>Inform us immediately and we'll adjust your itinerary accordingly.</p>
+            </details>
+            <details class="qa">
+              <summary>Can I request special meals during the trip?</summary>
+              <p>Absolutely — tell us your dietary preferences and we'll arrange suitable meals for you.</p>
+            </details>
+            <details class="qa">
+              <summary>Is there 24/7 customer support while traveling?</summary>
+              <p>Yes — we provide round-the-clock assistance for a seamless, stress-free journey.</p>
+            </details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="section contact" id="contact">
+      <div class="container grid grid--2">
+        <div data-reveal>
+          <p class="eyebrow">Still Have Questions?</p>
+          <h2>We're here <span class="accent">to help</span></h2>
+          <p class="section__lead">Reach us any time — our team responds fast on WhatsApp and email.</p>
+
+          <ul class="contact__list" role="list">
+            <li>
+              <span class="contact__label">WhatsApp</span>
+              <a href="https://wa.me/201204137431" rel="noopener" target="_blank">+20 120 413 7431</a>
+              <a href="https://wa.me/201288033424" rel="noopener" target="_blank">+20 128 803 3424</a>
+            </li>
+            <li>
+              <span class="contact__label">Email</span>
+              <a href="mailto:bookings@kemetiantours.com">bookings@kemetiantours.com</a>
+            </li>
+            <li>
+              <span class="contact__label">Social</span>
+              <a href="https://www.facebook.com/profile.php?id=61572140896484" rel="noopener" target="_blank">Facebook</a>
+            </li>
+          </ul>
+        </div>
+
+        <form class="contact__form" data-contact-form data-reveal novalidate>
+          <h3>Send us a message</h3>
+          <div class="field">
+            <label for="cf-name">Your name</label>
+            <input id="cf-name" name="name" type="text" autocomplete="name" required />
+          </div>
+          <div class="field">
+            <label for="cf-email">Email address</label>
+            <input id="cf-email" name="email" type="email" autocomplete="email" required />
+          </div>
+          <div class="field">
+            <label for="cf-message">How can we help?</label>
+            <textarea id="cf-message" name="message" rows="4" required></textarea>
+          </div>
+          <button type="submit" class="btn btn--primary btn--block">Send message</button>
+          <p class="form__status" role="status" aria-live="polite" data-form-status></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ FOOTER ============ -->
+  <footer class="site-footer">
+    <div class="container footer__inner">
+      <p>© <span data-year>2026</span> Kemetian Tours. All rights reserved.</p>
+      <nav aria-label="Footer">
+        <a href="#destinations">Destinations</a>
+        <a href="#booking">How It Works</a>
+        <a href="#faq">FAQ</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
 </body>
 </html>
