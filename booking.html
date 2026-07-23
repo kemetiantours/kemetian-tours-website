@@ -780,16 +780,45 @@ input[type=range]::-webkit-slider-thumb {
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-lite.js";
+// Talks to Firestore over its plain REST API directly (no SDK) rather than
+// the Firebase JS SDK. The SDK's document-lookup calls go through an
+// endpoint literally named "batchGet", which ad blockers / privacy shields
+// (Brave Shields, uBlock, etc.) commonly flag as tracking and silently
+// timeout - breaking promo code checks for visitors who have one enabled.
+// A plain REST GET to a specific document path doesn't match those filters.
 import { firebaseConfig } from "./js/firebase-config.js";
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+const FS_BASE = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents`;
+
+async function fetchWithTimeout(url, options, timeoutMs) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, Object.assign({}, options, { signal: controller.signal }));
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+// Converts a Firestore REST "fields" object ({name: {stringValue: "..."}})
+// into a plain JS object.
+function parseFirestoreFields(fields) {
+  const out = {};
+  for (const key in fields || {}) {
+    const v = fields[key];
+    if ('stringValue' in v) out[key] = v.stringValue;
+    else if ('booleanValue' in v) out[key] = v.booleanValue;
+    else if ('integerValue' in v) out[key] = Number(v.integerValue);
+    else if ('doubleValue' in v) out[key] = v.doubleValue;
+    else if ('timestampValue' in v) out[key] = new Date(v.timestampValue);
+    else if ('nullValue' in v) out[key] = null;
+  }
+  return out;
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 
-const S = { step:1, destinations:[], duration:7, activities:[], hotel:'', arrival:'', departure:'', adults:2, children:0, extras:[], promo:'', promoLabel:'' };
+const S = { step:1, destinations:[], duration:7, activities:[], hotel:'', arrival:'', departure:'', adults:2, children:0, extras:[], promo:'', promoLabel:'', promoTimesUsed:0 };
 
 /* ── PROMO CODE (validated live against Firestore - managed from the
    KemetianTours Events Admin desktop app) ── */
@@ -811,25 +840,32 @@ async function applyPromo() {
   btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Checking…';
 
   try {
-    const snap = await getDoc(doc(db, 'promoCodes', code));
+    const res = await fetchWithTimeout(
+      `${FS_BASE}/promoCodes/${encodeURIComponent(code)}?key=${firebaseConfig.apiKey}`,
+      {}, 12000
+    );
 
-    if (!snap.exists()) {
+    if (res.status === 404) {
       btn.disabled = false;
       btn.innerHTML = 'Apply Code';
       msg.classList.add('bad');
       msg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> Invalid promo code. Please check and try again.';
       return;
     }
+    if (!res.ok) throw new Error('HTTP ' + res.status);
 
-    const data = snap.data();
+    const json = await res.json();
+    const data = parseFirestoreFields(json.fields);
     const now = new Date();
-    const expired = data.expiresAt && data.expiresAt.toDate && data.expiresAt.toDate() < now;
+    const expired = data.expiresAt instanceof Date && data.expiresAt < now;
+    const usedUp = data.usageLimit != null && (data.timesUsed || 0) >= data.usageLimit;
 
-    if (!data.active || expired) {
+    if (!data.active || expired || usedUp) {
       btn.disabled = false;
       btn.innerHTML = 'Apply Code';
       msg.classList.add('bad');
-      msg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> This promo code has expired or is no longer active.';
+      msg.innerHTML = '<i class="fa-solid fa-circle-xmark"></i> ' +
+        (usedUp ? 'This promo code has already been fully redeemed.' : 'This promo code has expired or is no longer active.');
       return;
     }
 
@@ -837,6 +873,7 @@ async function applyPromo() {
 
     S.promo = code;
     S.promoLabel = label;
+    S.promoTimesUsed = data.timesUsed || 0;
     input.value = code;
     input.disabled = true;
     btn.disabled = true;
@@ -850,7 +887,8 @@ async function applyPromo() {
     btn.disabled = false;
     btn.innerHTML = 'Apply Code';
     msg.classList.add('bad');
-    msg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Couldn’t check that code right now. Please try again.';
+    msg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' +
+      (err.name === 'AbortError' ? 'That took too long - please try again.' : 'Couldn’t check that code right now. Please try again.');
   }
 }
 
@@ -1028,14 +1066,28 @@ async function submitForm() {
   };
 
   try {
-    const response = await fetch('https://api.web3forms.com/submit', {
+    const response = await fetchWithTimeout('https://api.web3forms.com/submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
       body: JSON.stringify(Object.assign({}, payload, { access_key: '41984132-1850-4442-9137-8a2712a50798' }))
-    });
+    }, 20000);
     const result = await response.json();
 
     if (result.success) {
+      if (S.promo) {
+        // Best-effort: record that this code was used, so it stops working
+        // once it hits its usage limit. Doesn't block the success screen if
+        // it fails - the inquiry itself already went through.
+        fetchWithTimeout(
+          `${FS_BASE}/promoCodes/${encodeURIComponent(S.promo)}?updateMask.fieldPaths=timesUsed&key=${firebaseConfig.apiKey}`,
+          {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fields: { timesUsed: { integerValue: String(S.promoTimesUsed + 1) } } })
+          },
+          10000
+        ).catch(err => console.error('Failed to record promo code usage:', err));
+      }
       document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
       document.getElementById('panel-success').classList.add('active');
       if (S.promo) {
@@ -1054,7 +1106,9 @@ async function submitForm() {
   } catch (e) {
     btn.disabled = false;
     btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send My Inquiry';
-    document.getElementById('err-7-msg').textContent = 'Network error. Please check your connection and try again.';
+    document.getElementById('err-7-msg').textContent = e.name === 'AbortError'
+      ? 'This is taking longer than expected. Please check your connection and try again.'
+      : 'Network error. Please check your connection and try again.';
     showErr(7);
   }
 }
