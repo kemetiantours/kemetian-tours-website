@@ -1,8 +1,12 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+// The regular Firestore SDK keeps a persistent "Listen/channel" connection
+// open in the background (for realtime updates we don't use), and ad
+// blockers/privacy shields (Brave Shields, uBlock, etc.) commonly flag that
+// specific request pattern as tracking and block it. The "lite" SDK only
+// makes plain, one-off HTTPS requests, which don't get flagged.
 import {
-  getFirestore, collection, query, where, orderBy, getDocs,
-  doc, getDoc, Timestamp
-} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+  getFirestore, collection, query, where, orderBy, getDocs, Timestamp
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-lite.js";
 import { firebaseConfig } from "./firebase-config.js";
 
 const WHATSAPP_NUMBER = "201204137431";
@@ -12,12 +16,6 @@ const db = getFirestore(app);
 
 const grid = document.getElementById("events-grid");
 const emptyState = document.getElementById("events-empty");
-const promoInput = document.getElementById("promo-input");
-const promoBtn = document.getElementById("promo-apply");
-const promoStatus = document.getElementById("promo-status");
-
-let events = [];
-let activePromo = null; // { code, discountType, discountValue }
 
 function formatDate(ts) {
   if (!ts) return "";
@@ -29,19 +27,8 @@ function formatPrice(n) {
   return `$${Number(n).toFixed(2)}`;
 }
 
-function discountedPrice(price) {
-  if (!activePromo) return price;
-  if (activePromo.discountType === "percent") {
-    return Math.max(0, price - (price * activePromo.discountValue) / 100);
-  }
-  return Math.max(0, price - activePromo.discountValue);
-}
-
 function reserveUrl(event) {
-  let text = `Hi! I'd like to reserve a spot for "${event.title}" on ${formatDate(event.startDate)}.`;
-  if (activePromo) {
-    text += ` I have promo code ${activePromo.code} applied.`;
-  }
+  const text = `Hi! I'd like to reserve a spot for "${event.title}" on ${formatDate(event.startDate)}.`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
@@ -55,9 +42,6 @@ function renderEvents() {
 
   grid.innerHTML = events.map((event) => {
     const price = Number(event.price) || 0;
-    const finalPrice = discountedPrice(price);
-    const hasDiscount = activePromo && finalPrice < price;
-
     return `
       <article class="event-card">
         <div class="event-card-image" style="background-image:url('${event.imageUrl || "img/loader/logo-static.png"}')"></div>
@@ -67,8 +51,7 @@ function renderEvents() {
           <p class="event-card-desc">${escapeHtml(event.description || "")}</p>
           <div class="event-card-footer">
             <div class="event-card-price">
-              ${hasDiscount ? `<span class="price-old">${formatPrice(price)}</span>` : ""}
-              <span class="price-now">${formatPrice(finalPrice)}</span>
+              <span class="price-now">${formatPrice(price)}</span>
             </div>
             <a class="event-reserve-btn" target="_blank" rel="noopener" href="${reserveUrl(event)}">Reserve</a>
           </div>
@@ -83,6 +66,8 @@ function escapeHtml(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+let events = [];
 
 async function loadEvents() {
   try {
@@ -102,52 +87,5 @@ async function loadEvents() {
     emptyState.textContent = "Couldn't load events right now. Please try again later.";
   }
 }
-
-async function applyPromoCode() {
-  const raw = promoInput.value.trim();
-  if (!raw) return;
-  const code = raw.toUpperCase();
-
-  promoStatus.textContent = "Checking...";
-  promoStatus.className = "promo-status";
-
-  try {
-    const snap = await getDoc(doc(db, "promoCodes", code));
-    if (!snap.exists()) {
-      activePromo = null;
-      promoStatus.textContent = "That code isn't valid.";
-      promoStatus.className = "promo-status promo-status-error";
-      renderEvents();
-      return;
-    }
-
-    const data = snap.data();
-    const now = new Date();
-    const expired = data.expiresAt && data.expiresAt.toDate() < now;
-
-    if (!data.active || expired) {
-      activePromo = null;
-      promoStatus.textContent = "That code has expired or is no longer active.";
-      promoStatus.className = "promo-status promo-status-error";
-      renderEvents();
-      return;
-    }
-
-    activePromo = { code, discountType: data.discountType, discountValue: data.discountValue };
-    const label = data.discountType === "percent" ? `${data.discountValue}% off` : `${formatPrice(data.discountValue)} off`;
-    promoStatus.textContent = `Applied! ${label} your reservation.`;
-    promoStatus.className = "promo-status promo-status-success";
-    renderEvents();
-  } catch (err) {
-    console.error("Failed to validate promo code:", err);
-    promoStatus.textContent = "Couldn't check that code right now. Please try again.";
-    promoStatus.className = "promo-status promo-status-error";
-  }
-}
-
-promoBtn.addEventListener("click", applyPromoCode);
-promoInput.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") applyPromoCode();
-});
 
 loadEvents();
