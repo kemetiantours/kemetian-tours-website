@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Upcoming Events - kemetiantours.com</title>
+	<link rel="stylesheet" href="fonts/google/outfit.css" media="all" />
+	<link rel="stylesheet" href="fonts/google/roboto-slab.css" media="all" />
+	<link rel="stylesheet" href="css/events.css">
+</head>
+<body class="events-page">
+
+	<header class="events-header">
+		<a class="logo-link" href="index.html">
+			<img src="img/loader/logo-static.png" alt="KemetianTours">
+			<span>KemetianTours</span>
+		</a>
+		<a class="home-link" href="index.html">&larr; Back to home</a>
+	</header>
+
+	<section class="events-hero">
+		<h1>Upcoming Events</h1>
+		<p>Join one of our upcoming small-group departures and experiences across Egypt. Have a promo code? Apply it below to see your discounted price.</p>
+	</section>
+
+	<div class="promo-box">
+		<label for="promo-input">Promo code</label>
+		<input id="promo-input" type="text" placeholder="e.g. SUMMER10" autocomplete="off">
+		<button id="promo-apply" type="button">Apply</button>
+		<div id="promo-status" class="promo-status"></div>
+	</div>
+
+	<section class="events-section">
+		<div id="events-grid" class="events-grid"></div>
+		<p id="events-empty" hidden>No upcoming events right now &mdash; check back soon!</p>
+	</section>
+
+	<footer class="events-footer">
+		<p>All rights reserved</p>
+	</footer>
+
+	<script type="module" src="js/events.js"></script>
+</body>
+</html>

@@ -10,3 +10,7 @@
 
 /* Contact section spacing fix */
     .elementor-343 .elementor-element.elementor-element-4dcfcd0{padding:20px 0 40px!important;margin-bottom:30px!important;position:relative;z-index:2;}
+
+/* Events page announcement bar */
+    .kt-events-bar{display:block;text-align:center;background:#FFCB36;color:#0f1417;font-family:'Outfit',sans-serif;font-weight:700;font-size:.9rem;padding:10px 16px;text-decoration:none;position:relative;z-index:100000;}
+    .kt-events-bar:hover{filter:brightness(0.95);}
