@@ -9,8 +9,6 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-lite.js";
 import { firebaseConfig } from "./firebase-config.js";
 
-const WHATSAPP_NUMBER = "201204137431";
-
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -25,11 +23,6 @@ function formatDate(ts) {
 
 function formatPrice(n) {
   return `$${Number(n).toFixed(2)}`;
-}
-
-function reserveUrl(event) {
-  const text = `Hi! I'd like to reserve a spot for "${event.title}" on ${formatDate(event.startDate)}.`;
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}`;
 }
 
 function renderEvents() {
@@ -53,7 +46,7 @@ function renderEvents() {
             <div class="event-card-price">
               <span class="price-now">${formatPrice(price)}</span>
             </div>
-            <a class="event-reserve-btn" target="_blank" rel="noopener" href="${reserveUrl(event)}">Reserve</a>
+            <a class="event-reserve-btn" href="event-detail.html?id=${encodeURIComponent(event.id)}">View Details</a>
           </div>
         </div>
       </article>
