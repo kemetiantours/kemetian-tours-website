@@ -205,6 +205,49 @@ body.event-story {
   color: #e8e8e8;
 }
 
+/* ---- Important remarks ---- */
+.story-remarks {
+  background: #0f1417;
+  padding: 8vh 6vw 6vh;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.story-remarks h2 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.4rem;
+  color: #FFCB36;
+  margin: 0 0 18px;
+}
+
+.story-remarks ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.story-remarks li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #ccc;
+}
+
+.story-remarks li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FFCB36;
+}
+
 /* ---- Gallery strip ---- */
 .story-gallery-strip {
   display: grid;

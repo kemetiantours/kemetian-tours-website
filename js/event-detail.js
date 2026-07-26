@@ -13,18 +13,22 @@ async function fetchWithTimeout(url, options, timeoutMs) {
   }
 }
 
+function parseFirestoreValue(v) {
+  if (!v) return undefined;
+  if ("stringValue" in v) return v.stringValue;
+  if ("booleanValue" in v) return v.booleanValue;
+  if ("integerValue" in v) return Number(v.integerValue);
+  if ("doubleValue" in v) return v.doubleValue;
+  if ("timestampValue" in v) return new Date(v.timestampValue);
+  if ("nullValue" in v) return null;
+  if ("arrayValue" in v) return (v.arrayValue.values || []).map(parseFirestoreValue);
+  if ("mapValue" in v) return parseFirestoreFields(v.mapValue.fields);
+  return undefined;
+}
+
 function parseFirestoreFields(fields) {
   const out = {};
-  for (const key in fields || {}) {
-    const v = fields[key];
-    if ("stringValue" in v) out[key] = v.stringValue;
-    else if ("booleanValue" in v) out[key] = v.booleanValue;
-    else if ("integerValue" in v) out[key] = Number(v.integerValue);
-    else if ("doubleValue" in v) out[key] = v.doubleValue;
-    else if ("timestampValue" in v) out[key] = new Date(v.timestampValue);
-    else if ("nullValue" in v) out[key] = null;
-    else if ("arrayValue" in v) out[key] = (v.arrayValue.values || []).map((item) => parseFirestoreFields({ v: item }).v);
-  }
+  for (const key in fields || {}) out[key] = parseFirestoreValue(fields[key]);
   return out;
 }
 
@@ -84,6 +88,23 @@ async function loadEvent() {
   }
 }
 
+function daysFromEvent(event, cover) {
+  if (Array.isArray(event.days) && event.days.length) return event.days;
+  // Back-compat: events created before the per-day editor stored one
+  // "itinerary" text block (one line per day) and a separate
+  // "galleryImages" list, paired up by index.
+  const lines = (event.itinerary || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  const images = event.galleryImages || [];
+  return lines.map((line, i) => {
+    const match = line.match(/^(Day\s*\d+[:\-]?)\s*(.*)$/i);
+    return {
+      label: match ? match[1].replace(/[:\-]$/, "") : `Day ${i + 1}`,
+      text: match ? match[2] : line,
+      image: images[i] || cover
+    };
+  });
+}
+
 function renderEvent(event) {
   document.title = (event.title || "Event") + " - kemetiantours.com";
 
@@ -98,7 +119,7 @@ function renderEvent(event) {
   if (event.startDate instanceof Date) metaParts.push(formatDate(event.startDate));
   if (event.location) metaParts.push(event.location);
 
-  const dayLines = (event.itinerary || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  const days = daysFromEvent(event, cover);
 
   let html = `
     <section class="story-hero" style="background-image:url('${cover}')">
@@ -111,18 +132,15 @@ function renderEvent(event) {
     </section>
   `;
 
-  if (dayLines.length) {
-    html += dayLines.map((line, i) => {
-      const match = line.match(/^(Day\s*\d+[:\-]?)\s*(.*)$/i);
-      const label = match ? match[1] : `Day ${i + 1}`;
-      const text = match ? match[2] : line;
-      const bg = images[i % images.length] || cover;
+  if (days.length) {
+    html += days.map((day, i) => {
+      const bg = day.image || images[i % images.length] || cover;
       const align = i % 2 === 1 ? "align-right" : "";
       return `
         <section class="story-section ${align}" style="background-image:url('${bg}')">
           <div class="story-section-content">
-            <span class="story-day-label">${escapeHtml(label)}</span>
-            <p>${escapeHtml(text)}</p>
+            <span class="story-day-label">${escapeHtml(day.label || `Day ${i + 1}`)}</span>
+            <p>${escapeHtml(day.text || "")}</p>
           </div>
         </section>
       `;
@@ -165,8 +183,19 @@ function renderEvent(event) {
         </div>
       </div>
     </section>
-    <footer class="story-footer"><p>All rights reserved</p></footer>
   `;
+
+  const remarkLines = (event.remarks || "").split("\n").map((l) => l.trim()).filter(Boolean);
+  if (remarkLines.length) {
+    html += `
+      <section class="story-remarks">
+        <h2>Important Remarks</h2>
+        <ul>${remarkLines.map((line) => `<li>${escapeHtml(line)}</li>`).join("")}</ul>
+      </section>
+    `;
+  }
+
+  html += `<footer class="story-footer"><p>All rights reserved</p></footer>`;
 
   root.innerHTML = html;
 
