@@ -1,13 +1,18 @@
 /* Shared site-wide footer - used on every page for a consistent look */
+/* Selectors are scoped as .kt-site-footer.kt-site-footer (doubled class)
+   to out-rank the Elementor kit's ".elementor-kit-51 a { color: ... }"
+   rule on pages that carry it (index.html, contact.html) - both rules
+   have the same normal specificity, and cascade order alone would
+   otherwise let Elementor's rule win and wash out the footer text. */
 
-.kt-site-footer {
+.kt-site-footer.kt-site-footer {
   background: #0f1417;
   color: #cfcfcf;
   padding: 48px 6vw 24px;
   font-family: 'Outfit', sans-serif;
 }
 
-.kt-footer-inner {
+.kt-site-footer.kt-site-footer .kt-footer-inner {
   max-width: 1100px;
   margin: 0 auto;
   display: flex;
@@ -17,7 +22,7 @@
   text-align: center;
 }
 
-.kt-footer-logo {
+.kt-site-footer.kt-site-footer .kt-footer-logo {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -25,35 +30,35 @@
   color: #fff;
 }
 
-.kt-footer-logo img { height: 38px; width: auto; }
+.kt-site-footer.kt-site-footer .kt-footer-logo img { height: 38px; width: auto; }
 
-.kt-footer-logo span {
+.kt-site-footer.kt-site-footer .kt-footer-logo span {
   font-family: 'Roboto Slab', serif;
   font-size: 1.05rem;
   letter-spacing: 0.03em;
 }
 
-.kt-footer-links {
+.kt-site-footer.kt-site-footer .kt-footer-links {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 10px 28px;
 }
 
-.kt-footer-links a {
+.kt-site-footer.kt-site-footer .kt-footer-links a {
   color: #cfcfcf;
   text-decoration: none;
   font-size: 0.88rem;
 }
 
-.kt-footer-links a:hover { color: #FFCB36; }
+.kt-site-footer.kt-site-footer .kt-footer-links a:hover { color: #FFCB36; }
 
-.kt-footer-social {
+.kt-site-footer.kt-site-footer .kt-footer-social {
   display: flex;
   gap: 14px;
 }
 
-.kt-footer-social a {
+.kt-site-footer.kt-site-footer .kt-footer-social a {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -67,15 +72,16 @@
   transition: background .2s ease, color .2s ease;
 }
 
-.kt-footer-social a:hover { background: #FFCB36; color: #0f1417; }
+.kt-site-footer.kt-site-footer .kt-footer-social a:hover { background: #FFCB36; color: #0f1417; }
+.kt-site-footer.kt-site-footer .kt-footer-social a:hover svg circle:first-child { fill: #0f1417; }
 
-.kt-footer-divider {
+.kt-site-footer.kt-site-footer .kt-footer-divider {
   width: 100%;
   height: 1px;
   background: rgba(255,255,255,0.08);
 }
 
-.kt-footer-copyright {
+.kt-site-footer.kt-site-footer .kt-footer-copyright {
   font-size: 0.8rem;
   color: #888;
 }
