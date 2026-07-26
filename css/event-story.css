@@ -1,0 +1,345 @@
+/* Cinematic, scroll-driven event detail page */
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body.event-story {
+  margin: 0;
+  background: #0a0d0f;
+  color: #fff;
+  font-family: 'Outfit', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ---- Nav ---- */
+.story-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 6vw;
+  background: linear-gradient(180deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 100%);
+  transition: background .3s ease;
+}
+
+.story-nav.scrolled { background: rgba(10,13,15,0.92); backdrop-filter: blur(6px); }
+
+.story-logo {
+  font-family: 'Roboto Slab', serif;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+}
+
+.story-back {
+  color: #FFCB36;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+.story-back:hover { text-decoration: underline; }
+
+/* ---- Hero ---- */
+.story-hero {
+  position: relative;
+  height: 100vh;
+  min-height: 560px;
+  display: flex;
+  align-items: flex-end;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.story-hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.15) 40%, rgba(10,13,15,0.95) 100%);
+}
+
+.story-hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 6vw 8vh;
+  max-width: 900px;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: story-fade-in 1.1s ease .2s forwards;
+}
+
+@keyframes story-fade-in { to { opacity: 1; transform: translateY(0); } }
+
+.story-hero-tag {
+  display: inline-block;
+  background: rgba(255,203,54,0.15);
+  color: #FFCB36;
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: 20px;
+  margin-bottom: 18px;
+}
+
+.story-hero h1 {
+  font-family: 'Roboto Slab', serif;
+  font-size: clamp(2.2rem, 6vw, 4.6rem);
+  line-height: 1.05;
+  margin: 0 0 16px;
+}
+
+.story-hero p {
+  font-size: clamp(1rem, 1.6vw, 1.25rem);
+  color: #d8d8d8;
+  max-width: 620px;
+  margin: 0;
+}
+
+.story-scroll-cue {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  width: 26px;
+  height: 42px;
+  border: 2px solid rgba(255,255,255,0.5);
+  border-radius: 14px;
+}
+
+.story-scroll-cue::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  width: 4px;
+  height: 8px;
+  background: #FFCB36;
+  border-radius: 2px;
+  transform: translateX(-50%);
+  animation: story-scroll-cue 1.8s ease infinite;
+}
+
+@keyframes story-scroll-cue {
+  0% { opacity: 1; top: 8px; }
+  100% { opacity: 0; top: 22px; }
+}
+
+/* ---- Day / chapter sections ---- */
+.story-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  padding: 10vh 6vw;
+}
+
+.story-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.15) 100%);
+}
+
+.story-section.align-right::after {
+  background: linear-gradient(270deg, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.15) 100%);
+}
+
+.story-section-content {
+  position: relative;
+  z-index: 2;
+  max-width: 560px;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+
+.story-section.align-right .story-section-content { margin-left: auto; text-align: right; }
+
+.story-section.is-visible .story-section-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.story-day-label {
+  display: inline-block;
+  color: #FFCB36;
+  font-family: 'Roboto Slab', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.story-section-content p {
+  font-size: clamp(1.05rem, 1.8vw, 1.4rem);
+  line-height: 1.6;
+  color: #f0f0f0;
+  margin: 0;
+}
+
+/* ---- Description section (no itinerary) ---- */
+.story-description {
+  padding: 14vh 6vw;
+  max-width: 780px;
+  margin: 0 auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+
+.story-description.is-visible { opacity: 1; transform: translateY(0); }
+
+.story-description p {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  line-height: 1.7;
+  color: #e8e8e8;
+}
+
+/* ---- Gallery strip ---- */
+.story-gallery-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 4px;
+}
+
+.story-gallery-strip .g-img {
+  height: 260px;
+  background-size: cover;
+  background-position: center;
+}
+
+/* ---- Booking section ---- */
+.story-booking {
+  position: relative;
+  padding: 12vh 6vw 10vh;
+  background: #0f1417;
+  display: flex;
+  justify-content: center;
+}
+
+.story-booking-card {
+  width: 100%;
+  max-width: 480px;
+  background: #171c1f;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 32px;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+
+.story-booking-card.is-visible { opacity: 1; transform: translateY(0); }
+
+.story-price-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.story-price { font-size: 2rem; font-weight: 700; color: #FFCB36; }
+.story-price-label { font-size: 0.85rem; color: #999; }
+.story-location { font-size: 0.9rem; color: #ccc; margin-top: 4px; }
+
+.story-booking-card h3 {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.25rem;
+  margin: 0 0 18px;
+}
+
+.story-booking-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.story-booking-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #aaa;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.story-booking-card input, .story-booking-card textarea {
+  padding: 12px 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: #0f1417;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.story-booking-card input:focus, .story-booking-card textarea:focus {
+  outline: none;
+  border-color: #FFCB36;
+}
+
+.story-booking-card button {
+  padding: 14px;
+  border-radius: 8px;
+  border: none;
+  background: #FFCB36;
+  color: #0f1417;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.98rem;
+  margin-top: 4px;
+}
+
+.story-booking-card button:hover { filter: brightness(0.95); }
+.story-booking-card button:disabled { opacity: 0.6; cursor: default; }
+
+.error-text { color: #ff6b6b; font-size: 0.85rem; }
+
+.booking-success {
+  background: rgba(52,168,83,0.12);
+  border: 1px solid #34a853;
+  color: #7ee29a;
+  border-radius: 10px;
+  padding: 18px 20px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.story-footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 0.85rem;
+  color: #777;
+  background: #0f1417;
+}
+
+.detail-error {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #999;
+  font-size: 1.1rem;
+}
+
+@media (max-width: 720px) {
+  .story-hero, .story-section { background-attachment: scroll; }
+  .story-section { padding: 8vh 7vw; }
+  .story-section.align-right .story-section-content { margin-left: 0; text-align: left; }
+}

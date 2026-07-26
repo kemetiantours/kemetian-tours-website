@@ -43,16 +43,22 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+const FALLBACK_IMAGE = "img/loader/logo-static.png";
+
 const params = new URLSearchParams(window.location.search);
 const eventId = params.get("id");
 
+const root = document.getElementById("story-root");
 const detailError = document.getElementById("detail-error");
-const detailContent = document.getElementById("detail-content");
+const nav = document.getElementById("story-nav");
+
+window.addEventListener("scroll", () => {
+  nav.classList.toggle("scrolled", window.scrollY > 40);
+});
 
 function showError() {
-  document.getElementById("detail-title").textContent = "Event not found";
   detailError.hidden = false;
-  detailContent.hidden = true;
+  root.hidden = true;
 }
 
 async function loadEvent() {
@@ -60,7 +66,6 @@ async function loadEvent() {
     showError();
     return;
   }
-
   try {
     const res = await fetchWithTimeout(
       `${FS_BASE}/events/${encodeURIComponent(eventId)}?key=${firebaseConfig.apiKey}`,
@@ -81,47 +86,105 @@ async function loadEvent() {
 
 function renderEvent(event) {
   document.title = (event.title || "Event") + " - kemetiantours.com";
-  document.getElementById("detail-title").textContent = event.title || "Untitled event";
 
-  const metaParts = [];
-  if (event.startDate instanceof Date) metaParts.push(formatDate(event.startDate));
-  if (event.location) metaParts.push(event.location);
-  document.getElementById("detail-meta").textContent = metaParts.join(" · ");
-
-  document.getElementById("detail-description").textContent = event.description || "";
-  document.getElementById("detail-price").textContent = formatPrice(event.price || 0);
-  document.getElementById("detail-location").textContent = event.location ? "\u{1F4CD} " + event.location : "";
-
-  // Gallery: cover image first, then gallery images, de-duplicated.
   const images = [];
   if (event.imageUrl) images.push(event.imageUrl);
   (event.galleryImages || []).forEach((url) => {
     if (url && !images.includes(url)) images.push(url);
   });
-  const galleryEl = document.getElementById("detail-gallery");
-  if (images.length) {
-    galleryEl.innerHTML = images.map((url) =>
-      `<div class="detail-gallery-img" style="background-image:url('${url}')"></div>`
-    ).join("");
-  } else {
-    galleryEl.innerHTML = `<div class="detail-gallery-img" style="background-image:url('img/loader/logo-static.png')"></div>`;
-  }
+  const cover = images[0] || FALLBACK_IMAGE;
 
-  // Itinerary: one line per day.
-  const lines = (event.itinerary || "").split("\n").map((l) => l.trim()).filter(Boolean);
-  if (lines.length) {
-    document.getElementById("detail-itinerary-heading").hidden = false;
-    document.getElementById("detail-itinerary").innerHTML = lines.map((line) => {
+  const metaParts = [];
+  if (event.startDate instanceof Date) metaParts.push(formatDate(event.startDate));
+  if (event.location) metaParts.push(event.location);
+
+  const dayLines = (event.itinerary || "").split("\n").map((l) => l.trim()).filter(Boolean);
+
+  let html = `
+    <section class="story-hero" style="background-image:url('${cover}')">
+      <div class="story-hero-content">
+        <span class="story-hero-tag">${escapeHtml(metaParts.join(" · ") || "Upcoming Trip")}</span>
+        <h1>${escapeHtml(event.title || "Untitled trip")}</h1>
+        <p>${escapeHtml(event.description || "")}</p>
+      </div>
+      <div class="story-scroll-cue" aria-hidden="true"></div>
+    </section>
+  `;
+
+  if (dayLines.length) {
+    html += dayLines.map((line, i) => {
       const match = line.match(/^(Day\s*\d+[:\-]?)\s*(.*)$/i);
-      return match
-        ? `<li><strong>${escapeHtml(match[1])}</strong> ${escapeHtml(match[2])}</li>`
-        : `<li>${escapeHtml(line)}</li>`;
+      const label = match ? match[1] : `Day ${i + 1}`;
+      const text = match ? match[2] : line;
+      const bg = images[i % images.length] || cover;
+      const align = i % 2 === 1 ? "align-right" : "";
+      return `
+        <section class="story-section ${align}" style="background-image:url('${bg}')">
+          <div class="story-section-content">
+            <span class="story-day-label">${escapeHtml(label)}</span>
+            <p>${escapeHtml(text)}</p>
+          </div>
+        </section>
+      `;
     }).join("");
+  } else if (images.length > 1) {
+    html += `<div class="story-gallery-strip">${images.slice(1).map((url) =>
+      `<div class="g-img" style="background-image:url('${url}')"></div>`
+    ).join("")}</div>`;
   }
 
-  detailContent.hidden = false;
+  html += `
+    <section class="story-booking">
+      <div class="story-booking-card">
+        <div class="story-price-row">
+          <div>
+            <div class="story-price-label">Starting from</div>
+            <div class="story-price">${formatPrice(event.price || 0)}</div>
+          </div>
+          <div class="story-location">${event.location ? "\u{1F4CD} " + escapeHtml(event.location) : ""}</div>
+        </div>
+        <h3>Request to Book</h3>
+        <form id="booking-form">
+          <label>Full name
+            <input type="text" id="rb-name" required>
+          </label>
+          <label>Email
+            <input type="email" id="rb-email" required>
+          </label>
+          <label>Phone / WhatsApp
+            <input type="tel" id="rb-phone">
+          </label>
+          <label>Notes (optional)
+            <textarea id="rb-notes" rows="3"></textarea>
+          </label>
+          <div id="rb-error" class="error-text" hidden></div>
+          <button type="submit" id="rb-submit">Send Booking Request</button>
+        </form>
+        <div id="booking-success" class="booking-success" hidden>
+          &#10003; Thanks! Your booking request was sent - we'll get back to you within 24 hours.
+        </div>
+      </div>
+    </section>
+    <footer class="story-footer"><p>All rights reserved</p></footer>
+  `;
 
+  root.innerHTML = html;
+
+  setupReveal();
   document.getElementById("booking-form").addEventListener("submit", (e) => submitBooking(e, event));
+}
+
+function setupReveal() {
+  const targets = document.querySelectorAll(".story-section, .story-description, .story-booking-card");
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("is-visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  targets.forEach((el) => observer.observe(el));
 }
 
 async function submitBooking(e, event) {

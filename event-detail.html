@@ -6,70 +6,18 @@
 	<title>Event Details - kemetiantours.com</title>
 	<link rel="stylesheet" href="fonts/google/outfit.css" media="all" />
 	<link rel="stylesheet" href="fonts/google/roboto-slab.css" media="all" />
-	<link rel="stylesheet" href="css/events.css">
+	<link rel="stylesheet" href="css/event-story.css">
 </head>
-<body class="events-page">
+<body class="event-story">
 
-	<header class="events-header">
-		<a class="logo-link" href="index.html">
-			<img src="img/loader/logo-static.png" alt="KemetianTours">
-			<span>KemetianTours</span>
-		</a>
-		<a class="home-link" href="events.html">&larr; Back to events</a>
+	<header class="story-nav" id="story-nav">
+		<a class="story-logo" href="index.html">KemetianTours</a>
+		<a class="story-back" href="events.html">&larr; All events</a>
 	</header>
 
-	<section class="events-hero">
-		<h1 id="detail-title">Loading…</h1>
-		<p id="detail-meta"></p>
-	</section>
-
-	<section class="events-section" id="detail-content" hidden>
-		<div id="detail-gallery" class="detail-gallery"></div>
-
-		<div class="detail-layout">
-			<div class="detail-main">
-				<h2>About this trip</h2>
-				<p id="detail-description"></p>
-
-				<h2 id="detail-itinerary-heading" hidden>Itinerary</h2>
-				<ol id="detail-itinerary" class="detail-itinerary"></ol>
-			</div>
-
-			<aside class="detail-sidebar">
-				<div class="detail-price-box">
-					<div class="detail-price" id="detail-price"></div>
-					<div class="detail-location" id="detail-location"></div>
-				</div>
-
-				<form id="booking-form" class="detail-booking-form">
-					<h3>Request to Book</h3>
-					<label>Full name
-						<input type="text" id="rb-name" required>
-					</label>
-					<label>Email
-						<input type="email" id="rb-email" required>
-					</label>
-					<label>Phone / WhatsApp
-						<input type="tel" id="rb-phone">
-					</label>
-					<label>Notes (optional)
-						<textarea id="rb-notes" rows="3"></textarea>
-					</label>
-					<div id="rb-error" class="error-text" hidden></div>
-					<button type="submit" id="rb-submit">Send Booking Request</button>
-				</form>
-				<div id="booking-success" class="booking-success" hidden>
-					✓ Thanks! Your booking request was sent - we'll get back to you within 24 hours.
-				</div>
-			</aside>
-		</div>
-	</section>
+	<main id="story-root"></main>
 
 	<p id="detail-error" class="detail-error" hidden>Couldn't load this event. It may have been removed.</p>
-
-	<footer class="events-footer">
-		<p>All rights reserved</p>
-	</footer>
 
 	<script type="module" src="js/event-detail.js"></script>
 </body>
