@@ -315,7 +315,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 </style>
 </head>
-<body>
+<body data-page="booking">
 
 <header>
   <a href="index.html" class="logo-wrap">
@@ -330,9 +330,9 @@ input[type=range]::-webkit-slider-thumb {
 </header>
 
 <div class="hero">
-  <div class="hero-tag">Tailored Exclusively for You</div>
-  <h1>Design Your <span>Perfect</span><br>Egypt Journey</h1>
-  <p>Tell us what you dream of — our experts craft every detail from the Pyramids to the Nile.</p>
+  <div class="hero-tag" data-edit="booking.hero_tag">Tailored Exclusively for You</div>
+  <h1 data-edit="booking.hero_heading">Design Your Perfect Egypt Journey</h1>
+  <p data-edit="booking.hero_paragraph">Tell us what you dream of — our experts craft every detail from the Pyramids to the Nile.</p>
 </div>
 
 <div class="progress-bar">
@@ -1288,6 +1288,8 @@ setDur(7);
 		<div class="kt-footer-copyright">&copy; 2026 KemetianTours. All rights reserved.</div>
 	</div>
 </footer>
+
+<script src="js/content-loader.js" data-base=""></script>
 
 </body>
 </html>
