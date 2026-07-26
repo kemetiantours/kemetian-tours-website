@@ -1,0 +1,81 @@
+/* Shared site-wide footer - used on every page for a consistent look */
+
+.kt-site-footer {
+  background: #0f1417;
+  color: #cfcfcf;
+  padding: 48px 6vw 24px;
+  font-family: 'Outfit', sans-serif;
+}
+
+.kt-footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  text-align: center;
+}
+
+.kt-footer-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.kt-footer-logo img { height: 38px; width: auto; }
+
+.kt-footer-logo span {
+  font-family: 'Roboto Slab', serif;
+  font-size: 1.05rem;
+  letter-spacing: 0.03em;
+}
+
+.kt-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px 28px;
+}
+
+.kt-footer-links a {
+  color: #cfcfcf;
+  text-decoration: none;
+  font-size: 0.88rem;
+}
+
+.kt-footer-links a:hover { color: #FFCB36; }
+
+.kt-footer-social {
+  display: flex;
+  gap: 14px;
+}
+
+.kt-footer-social a {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: background .2s ease, color .2s ease;
+}
+
+.kt-footer-social a:hover { background: #FFCB36; color: #0f1417; }
+
+.kt-footer-divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+}
+
+.kt-footer-copyright {
+  font-size: 0.8rem;
+  color: #888;
+}
