@@ -21,9 +21,24 @@
           const field = json.fields[key];
           const value = field.stringValue;
           if (value == null) return;
+
+          // "someKey__width" is a companion field holding a CSS width for
+          // the image tagged data-edit="someKey", not its own element.
+          if (key.endsWith("__width")) {
+            const baseKey = key.slice(0, -"__width".length);
+            document.querySelectorAll(`[data-edit="${cssEscape(baseKey)}"]`).forEach((el) => {
+              if (value) el.style.width = value;
+            });
+            return;
+          }
+
           document.querySelectorAll(`[data-edit="${cssEscape(key)}"]`).forEach((el) => {
-            if (el.tagName === "IMG") el.src = value;
-            else el.textContent = value;
+            if (el.tagName === "IMG") {
+              el.removeAttribute("srcset");
+              el.src = value;
+            } else {
+              el.textContent = value;
+            }
           });
         });
       })
