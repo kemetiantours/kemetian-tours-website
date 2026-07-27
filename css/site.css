@@ -32,6 +32,37 @@
         }
     }
 
+/* "Arrive in Egypt" hero band: its background-image is forced to a
+   fixed 721px width regardless of viewport (see
+   .elementor-element-d792ec9 in elementor-inline.css), while the
+   section itself keeps a fixed 712px min-height on every screen size.
+   On phones the image no longer covers the full height at that fixed
+   width, leaving a large blank gap below it. Force the background to
+   actually cover the section on narrow viewports. */
+@media (max-width:1024px){
+    .elementor-element-d792ec9:not(.elementor-motion-effects-element-type-background){
+        background-size: cover !important;
+    }
+}
+
+/* "Expertly Crafted Kemetian Experiences" photo collage: both the
+   rectangular photo's corner radius (400px) and the circular photo's
+   negative top margin (-230px, pulling it up to overlap its sibling)
+   were tuned for their much larger desktop/tablet size. On narrow
+   phones the same fixed-pixel radius exceeds the image's own width -
+   clamping into a big rounded blob that hides most of the photo behind
+   white page background - and the same fixed overlap now covers most
+   or all of the smaller image's height, leaving a blank gap where
+   content should continue. Scale both down for phones. */
+@media (max-width:767px){
+    .elementor-element-48b031a3 img{
+        border-radius: 24px !important;
+    }
+    .elementor-element-55b6d10f > .elementor-widget-container{
+        margin-top: -70px !important;
+    }
+}
+
 /* Events page floating button - stays visible while scrolling */
     .kt-events-bar{position:fixed;top:18px;right:18px;z-index:100000;display:inline-block;background:#FFCB36;color:#0f1417;font-family:'Outfit',sans-serif;font-weight:700;font-size:.85rem;padding:12px 20px;border-radius:999px;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,0.25);}
     .kt-events-bar:hover{filter:brightness(0.95);}
