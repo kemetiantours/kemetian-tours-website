@@ -187,9 +187,11 @@ input[type=range]::-webkit-slider-thumb {
 /* DATES & PAX */
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
 .field-box label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; }
-.field-box input { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); outline: none; transition: border-color 0.2s; }
-.field-box input:focus { border-color: var(--teal); }
+.field-box input, .field-box textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); outline: none; transition: border-color 0.2s; }
+.field-box input:focus, .field-box textarea:focus { border-color: var(--teal); }
 .field-box input.invalid { border-color: var(--error); background: var(--error-bg); }
+.field-box textarea { resize: vertical; min-height: 80px; font-family: 'Inter', sans-serif; }
+.field-box input[type="file"] { padding: 9px 14px; }
 .counter-box { display: flex; align-items: center; background: var(--white); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; }
 .cnt-btn { width: 42px; height: 44px; border: none; background: var(--teal-light); color: var(--teal); font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif; }
 .cnt-btn:hover { background: var(--teal); color: white; }
@@ -341,7 +343,7 @@ input[type=range]::-webkit-slider-thumb {
       <div class="s-num">1</div><div class="s-label">Destinations</div>
     </div>
     <div class="step-tab" id="tab-2" data-jump="2">
-      <div class="s-num">2</div><div class="s-label">Duration</div>
+      <div class="s-num">2</div><div class="s-label">Duration &amp; Dates</div>
     </div>
     <div class="step-tab" id="tab-3" data-jump="3">
       <div class="s-num">3</div><div class="s-label">Activities</div>
@@ -350,13 +352,10 @@ input[type=range]::-webkit-slider-thumb {
       <div class="s-num">4</div><div class="s-label">Hotel Level</div>
     </div>
     <div class="step-tab" id="tab-5" data-jump="5">
-      <div class="s-num">5</div><div class="s-label">Dates & Guests</div>
+      <div class="s-num">5</div><div class="s-label">Extras</div>
     </div>
     <div class="step-tab" id="tab-6" data-jump="6">
-      <div class="s-num">6</div><div class="s-label">Extras</div>
-    </div>
-    <div class="step-tab" id="tab-7" data-jump="7">
-      <div class="s-num">7</div><div class="s-label">Send Inquiry</div>
+      <div class="s-num">6</div><div class="s-label">Send Inquiry</div>
     </div>
   </div>
 </div>
@@ -397,11 +396,6 @@ input[type=range]::-webkit-slider-thumb {
           <div class="dest-thumb"><i class="fa-solid fa-tree"></i></div>
           <div class="dest-info"><strong>Siwa Oasis</strong><span>Remote desert & oracle temple</span></div>
         </div>
-        <div class="dest-card" data-dest="Dahab & Red Sea">
-          <div class="check-badge"><i class="fa fa-check"></i></div>
-          <div class="dest-thumb"><i class="fa-solid fa-fish"></i></div>
-          <div class="dest-info"><strong>Dahab & Red Sea</strong><span>Diving & coral reefs</span></div>
-        </div>
         <div class="dest-card" data-dest="Faiyum">
           <div class="check-badge"><i class="fa fa-check"></i></div>
           <div class="dest-thumb"><i class="fa-solid fa-mountain-sun"></i></div>
@@ -412,22 +406,37 @@ input[type=range]::-webkit-slider-thumb {
           <div class="dest-thumb"><i class="fa-solid fa-wind"></i></div>
           <div class="dest-info"><strong>White Desert</strong><span>Chalk formations & camping</span></div>
         </div>
-        <div class="dest-card" data-dest="Nile Cruise">
+        <div class="dest-card" data-dest="Dahab">
           <div class="check-badge"><i class="fa fa-check"></i></div>
-          <div class="dest-thumb"><i class="fa-solid fa-ship"></i></div>
-          <div class="dest-info"><strong>Nile Cruise</strong><span>Luxor to Aswan by river</span></div>
+          <div class="dest-thumb"><i class="fa-solid fa-fish"></i></div>
+          <div class="dest-info"><strong>Dahab</strong><span>Diving & coral reefs</span></div>
+        </div>
+        <div class="dest-card" data-dest="Sharm El Sheikh">
+          <div class="check-badge"><i class="fa fa-check"></i></div>
+          <div class="dest-thumb"><i class="fa-solid fa-umbrella-beach"></i></div>
+          <div class="dest-info"><strong>Sharm El Sheikh</strong><span>Red Sea resorts & reefs</span></div>
+        </div>
+        <div class="dest-card" data-dest="Hurghada">
+          <div class="check-badge"><i class="fa fa-check"></i></div>
+          <div class="dest-thumb"><i class="fa-solid fa-water"></i></div>
+          <div class="dest-info"><strong>Hurghada</strong><span>Beaches & water sports</span></div>
+        </div>
+        <div class="dest-card" data-dest="Marsa Alam">
+          <div class="check-badge"><i class="fa fa-check"></i></div>
+          <div class="dest-thumb"><i class="fa-solid fa-anchor"></i></div>
+          <div class="dest-info"><strong>Marsa Alam</strong><span>Pristine reefs & marine life</span></div>
         </div>
       </div>
       <div class="btn-row">
-        <button class="btn-next" data-next="1">Next: Choose Duration <i class="fa fa-arrow-right"></i></button>
+        <button class="btn-next" data-next="1">Next: Duration & Dates <i class="fa fa-arrow-right"></i></button>
       </div>
     </div>
 
-    <!-- STEP 2 -->
+    <!-- STEP 2 (merged Duration + Dates & Guests) -->
     <div class="panel" id="panel-2">
       <div class="panel-head">
-        <h2>How many days?</h2>
-        <p>Drag the slider or pick a suggested trip length below.</p>
+        <h2>Duration, Dates &amp; Guests</h2>
+        <p>Choose your trip length, arrival date, and who's traveling.</p>
       </div>
       <div class="dur-display">
         <div class="dur-number" id="dn">7</div>
@@ -443,139 +452,16 @@ input[type=range]::-webkit-slider-thumb {
         <button class="preset" data-snap="10">In-depth · 10 days</button>
         <button class="preset" data-snap="14">Grand Tour · 14 days</button>
       </div>
-      <p style="margin-top:16px; font-size:13px; color:var(--text-muted); background:var(--teal-light); padding:10px 14px; border-radius:8px; border-left:3px solid var(--teal);">
-        <i class="fa-solid fa-circle-info" style="color:var(--teal); margin-right:6px;"></i>
-        Your arrival and departure dates on the next step must match this duration exactly.
-      </p>
-      <div class="btn-row" style="margin-top:28px;">
-        <button class="btn-back" data-prev="2"><i class="fa fa-arrow-left"></i> Back</button>
-        <button class="btn-next" data-next="2">Next: Activities <i class="fa fa-arrow-right"></i></button>
-      </div>
-    </div>
 
-    <!-- STEP 3 -->
-    <div class="panel" id="panel-3">
-      <div class="panel-head">
-        <h2>What do you love doing?</h2>
-        <p>Select the experiences that matter most to you.</p>
-      </div>
-      <div class="val-error" id="err-3"><i class="fa-solid fa-circle-exclamation"></i> Please select at least one activity to continue.</div>
-      <div class="check-grid">
-        <div class="check-item" data-check="activities" data-val="Ancient Temples & Monuments">
-          <div class="ci-icon"><i class="fa-solid fa-landmark"></i></div>
-          <div class="ci-text"><strong>Ancient Monuments</strong><span>Pyramids, temples & tombs</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Nile Felucca Sailing">
-          <div class="ci-icon"><i class="fa-solid fa-sailboat"></i></div>
-          <div class="ci-text"><strong>Felucca Sailing</strong><span>Traditional Nile sailboats</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Desert Safari & Camel Ride" data-requires-dest="Siwa Oasis,White Desert,Faiyum">
-          <div class="ci-icon"><i class="fa-solid fa-person-hiking"></i></div>
-          <div class="ci-text"><strong>Desert Safari</strong><span>Camel rides & sand dunes</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Snorkeling & Diving" data-requires-dest="Dahab & Red Sea">
-          <div class="ci-icon"><i class="fa-solid fa-water-ladder"></i></div>
-          <div class="ci-text"><strong>Snorkeling & Diving</strong><span>Red Sea coral reefs</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Hot Air Balloon over Luxor" data-requires-dest="Luxor">
-          <div class="ci-icon"><i class="fa-solid fa-cloud-sun"></i></div>
-          <div class="ci-text"><strong>Hot Air Balloon</strong><span>Sunrise above Luxor temples</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Museum Visits">
-          <div class="ci-icon"><i class="fa-solid fa-building-columns"></i></div>
-          <div class="ci-text"><strong>Museum Visits</strong><span>Egyptian & Islamic museums</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Local Cuisine & Food Tours">
-          <div class="ci-icon"><i class="fa-solid fa-utensils"></i></div>
-          <div class="ci-text"><strong>Local Cuisine</strong><span>Food tours & cooking classes</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Bazaars & Shopping">
-          <div class="ci-icon"><i class="fa-solid fa-bag-shopping"></i></div>
-          <div class="ci-text"><strong>Bazaars & Shopping</strong><span>Khan el-Khalili & souks</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Desert Stargazing" data-requires-dest="Siwa Oasis,White Desert,Faiyum">
-          <div class="ci-icon"><i class="fa-solid fa-moon"></i></div>
-          <div class="ci-text"><strong>Desert Stargazing</strong><span>Night sky in the Sahara</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="activities" data-val="Sound & Light Shows" data-requires-dest="Cairo & Giza,Luxor,Aswan">
-          <div class="ci-icon"><i class="fa-solid fa-star"></i></div>
-          <div class="ci-text"><strong>Sound & Light Shows</strong><span>Spectacular night shows</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-      </div>
-      <div class="btn-row">
-        <button class="btn-back" data-prev="3"><i class="fa fa-arrow-left"></i> Back</button>
-        <button class="btn-next" data-next="3">Next: Hotel Level <i class="fa fa-arrow-right"></i></button>
-      </div>
-    </div>
-
-    <!-- STEP 4 -->
-    <div class="panel" id="panel-4">
-      <div class="panel-head">
-        <h2>Your comfort level</h2>
-        <p>Choose the accommodation standard that fits your style.</p>
-      </div>
-      <div class="val-error" id="err-4"><i class="fa-solid fa-circle-exclamation"></i> Please select a hotel level to continue.</div>
-      <div class="hotel-grid">
-        <div class="hotel-card" data-hotel="Standard · 3-Star">
-          <div class="h-icon"><i class="fa-solid fa-hotel"></i></div>
-          <h4>Standard</h4>
-          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-          <p>Comfortable, well-located hotels with all essentials for a great stay.</p>
-          <div class="hotel-eg">e.g. Ibis, Golden Tulip</div>
-        </div>
-        <div class="hotel-card" data-hotel="Superior · 4-Star">
-          <div class="h-icon"><i class="fa-solid fa-building"></i></div>
-          <h4>Superior</h4>
-          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-          <p>Upscale amenities, stunning views, and excellent service throughout.</p>
-          <div class="hotel-eg">e.g. Steigenberger, Novotel</div>
-        </div>
-        <div class="hotel-card" data-hotel="Luxury · 5-Star">
-          <div class="h-icon"><i class="fa-solid fa-gem"></i></div>
-          <h4>Luxury</h4>
-          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-          <p>World-class resorts with Nile views, spa, butler service & fine dining.</p>
-          <div class="hotel-eg">e.g. Four Seasons, Sofitel Legend</div>
-        </div>
-        <div class="hotel-card" data-hotel="Boutique & Heritage">
-          <div class="h-icon"><i class="fa-solid fa-igloo"></i></div>
-          <h4>Boutique & Heritage</h4>
-          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
-          <p>Unique historic properties — Nubian guesthouses to colonial mansions.</p>
-          <div class="hotel-eg">e.g. Old Cataract Aswan</div>
-        </div>
-      </div>
-      <div class="btn-row">
-        <button class="btn-back" data-prev="4"><i class="fa fa-arrow-left"></i> Back</button>
-        <button class="btn-next" data-next="4">Next: Dates & Guests <i class="fa fa-arrow-right"></i></button>
-      </div>
-    </div>
-
-    <!-- STEP 5 -->
-    <div class="panel" id="panel-5">
-      <div class="panel-head">
-        <h2>When are you traveling?</h2>
-        <p>Set your travel dates and number of guests.</p>
-      </div>
-      <div class="val-error" id="err-5"><i class="fa-solid fa-circle-exclamation"></i> <span id="err-5-msg">Please fill in your travel dates.</span></div>
-      <div class="field-row">
+      <div class="val-error" id="err-2"><i class="fa-solid fa-circle-exclamation"></i> <span id="err-2-msg">Please select an arrival date.</span></div>
+      <div class="field-row" style="margin-top:20px;">
         <div class="field-box">
           <label>Arrival Date</label>
-          <input type="date" id="arr" >
+          <input type="date" id="arr">
         </div>
         <div class="field-box">
-          <label>Departure Date</label>
-          <input type="date" id="dep" >
+          <label>Departure Date <span style="font-weight:400; color:var(--text-muted);">(auto-calculated)</span></label>
+          <input type="text" id="dep-display" readonly placeholder="Select an arrival date first">
         </div>
       </div>
       <div class="field-row">
@@ -596,24 +482,134 @@ input[type=range]::-webkit-slider-thumb {
           </div>
         </div>
       </div>
-      <div class="btn-row">
-        <button class="btn-back" data-prev="5"><i class="fa fa-arrow-left"></i> Back</button>
-        <button class="btn-next" data-next="5">Next: Extra Services <i class="fa fa-arrow-right"></i></button>
+      <div class="field-row" id="children-ages-wrap" style="display:none; flex-wrap:wrap;"></div>
+
+      <div class="field-box" style="margin-top:8px; max-width:360px;">
+        <label>Flight Ticket <span style="font-weight:400; color:var(--text-muted);">(optional attachment)</span></label>
+        <input type="file" id="flight-ticket" accept=".pdf,.jpg,.jpeg,.png">
+      </div>
+
+      <div class="btn-row" style="margin-top:28px;">
+        <button class="btn-back" data-prev="2"><i class="fa fa-arrow-left"></i> Back</button>
+        <button class="btn-next" data-next="2">Next: Activities <i class="fa fa-arrow-right"></i></button>
       </div>
     </div>
 
-    <!-- STEP 6 -->
-    <div class="panel" id="panel-6">
+    <!-- STEP 3 -->
+    <div class="panel" id="panel-3">
+      <div class="panel-head">
+        <h2>Choose your preference tour type</h2>
+        <p>Select the experiences that matter most to you.</p>
+      </div>
+      <div class="val-error" id="err-3"><i class="fa-solid fa-circle-exclamation"></i> Please select at least one activity to continue.</div>
+      <div class="check-grid">
+        <div class="check-item" data-check="activities" data-val="Nile Cruise">
+          <div class="ci-icon"><i class="fa-solid fa-ship"></i></div>
+          <div class="ci-text"><strong>Nile Cruise</strong><span>Sailing the Nile in style</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Luxury Travel">
+          <div class="ci-icon"><i class="fa-solid fa-gem"></i></div>
+          <div class="ci-text"><strong>Luxury Travel</strong><span>Premium comfort throughout</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Budget Travel">
+          <div class="ci-icon"><i class="fa-solid fa-wallet"></i></div>
+          <div class="ci-text"><strong>Budget Travel</strong><span>Great value for money</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Desert Tour">
+          <div class="ci-icon"><i class="fa-solid fa-person-hiking"></i></div>
+          <div class="ci-text"><strong>Desert Tour</strong><span>Safaris & sand dunes</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Honeymooners">
+          <div class="ci-icon"><i class="fa-solid fa-heart"></i></div>
+          <div class="ci-text"><strong>Honeymooners</strong><span>Romantic getaways</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Historical Travel">
+          <div class="ci-icon"><i class="fa-solid fa-landmark"></i></div>
+          <div class="ci-text"><strong>Historical Travel</strong><span>Ancient monuments & museums</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Beaches Destination">
+          <div class="ci-icon"><i class="fa-solid fa-umbrella-beach"></i></div>
+          <div class="ci-text"><strong>Beaches Destination</strong><span>Red Sea coastline</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Night Life">
+          <div class="ci-icon"><i class="fa-solid fa-martini-glass"></i></div>
+          <div class="ci-text"><strong>Night Life</strong><span>Bars, shows & entertainment</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Traditional Food Experience">
+          <div class="ci-icon"><i class="fa-solid fa-utensils"></i></div>
+          <div class="ci-text"><strong>Traditional Food</strong><span>Local cuisine & flavors</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+        <div class="check-item" data-check="activities" data-val="Water Activity">
+          <div class="ci-icon"><i class="fa-solid fa-water-ladder"></i></div>
+          <div class="ci-text"><strong>Water Activity</strong><span>Diving, snorkeling & more</span></div>
+          <div class="ci-check"><i class="fa fa-check"></i></div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" data-prev="3"><i class="fa fa-arrow-left"></i> Back</button>
+        <button class="btn-next" data-next="3">Next: Hotel Level <i class="fa fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="panel" id="panel-4">
+      <div class="panel-head">
+        <h2>Your comfort level</h2>
+        <p>Choose the accommodation standard that fits your style.</p>
+      </div>
+      <div class="val-error" id="err-4"><i class="fa-solid fa-circle-exclamation"></i> Please select a hotel level to continue.</div>
+      <div class="hotel-grid">
+        <div class="hotel-card" data-hotel="Standard · 4-Star">
+          <div class="h-icon"><i class="fa-solid fa-hotel"></i></div>
+          <h4>Standard</h4>
+          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+          <p>Comfortable, well-located hotels with all essentials for a great stay.</p>
+          <div class="hotel-eg">e.g. Ibis, Golden Tulip</div>
+        </div>
+        <div class="hotel-card" data-hotel="Deluxe · 4-Star">
+          <div class="h-icon"><i class="fa-solid fa-building"></i></div>
+          <h4>Deluxe</h4>
+          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+          <p>Upscale amenities, stunning views, and excellent service throughout.</p>
+          <div class="hotel-eg">e.g. Steigenberger, Novotel</div>
+        </div>
+        <div class="hotel-card" data-hotel="Luxury · 5-Star">
+          <div class="h-icon"><i class="fa-solid fa-gem"></i></div>
+          <h4>Luxury</h4>
+          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+          <p>World-class resorts with Nile views, spa, butler service & fine dining.</p>
+          <div class="hotel-eg">e.g. Four Seasons, Sofitel Legend</div>
+        </div>
+        <div class="hotel-card" data-hotel="Superior · 5-Star">
+          <div class="h-icon"><i class="fa-solid fa-crown"></i></div>
+          <h4>Superior</h4>
+          <div class="hotel-stars"><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></div>
+          <p>Exceptional five-star properties with elevated service and exclusive amenities.</p>
+          <div class="hotel-eg">e.g. Kempinski, St. Regis</div>
+        </div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" data-prev="4"><i class="fa fa-arrow-left"></i> Back</button>
+        <button class="btn-next" data-next="4">Next: Extra Services <i class="fa fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="panel" id="panel-5">
       <div class="panel-head">
         <h2>Any extra services?</h2>
         <p>Optional additions — you can skip this step if you prefer.</p>
       </div>
       <div class="check-grid">
-        <div class="check-item" data-check="extras" data-val="Private Egyptologist Guide">
-          <div class="ci-icon"><i class="fa-solid fa-user-tie"></i></div>
-          <div class="ci-text"><strong>Private Guide</strong><span>Certified Egyptologist</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
         <div class="check-item" data-check="extras" data-val="Private Airport Transfers">
           <div class="ci-icon"><i class="fa-solid fa-van-shuttle"></i></div>
           <div class="ci-text"><strong>Airport Transfers</strong><span>Private pick-up & drop-off</span></div>
@@ -629,35 +625,24 @@ input[type=range]::-webkit-slider-thumb {
           <div class="ci-text"><strong>Visa Assistance</strong><span>We handle your Egypt e-visa</span></div>
           <div class="ci-check"><i class="fa fa-check"></i></div>
         </div>
-        <div class="check-item" data-check="extras" data-val="Travel Insurance">
-          <div class="ci-icon"><i class="fa-solid fa-shield-halved"></i></div>
-          <div class="ci-text"><strong>Travel Insurance</strong><span>Full coverage, peace of mind</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
         <div class="check-item" data-check="extras" data-val="Professional Photography Session">
           <div class="ci-icon"><i class="fa-solid fa-camera"></i></div>
           <div class="ci-text"><strong>Photography Session</strong><span>Pro shoot at iconic sites</span></div>
           <div class="ci-check"><i class="fa fa-check"></i></div>
         </div>
-        <div class="check-item" data-check="extras" data-val="Nile Cruise Add-on" data-requires-dest="Luxor,Aswan">
-          <div class="ci-icon"><i class="fa-solid fa-ship"></i></div>
-          <div class="ci-text"><strong>Nile Cruise Add-on</strong><span>3 or 4 night luxury cruise</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
-        <div class="check-item" data-check="extras" data-val="Special Meal Requests">
-          <div class="ci-icon"><i class="fa-solid fa-bowl-food"></i></div>
-          <div class="ci-text"><strong>Special Meals</strong><span>Halal, vegan, dietary needs</span></div>
-          <div class="ci-check"><i class="fa fa-check"></i></div>
-        </div>
+      </div>
+      <div class="field-box" style="margin-top:6px;">
+        <label>Any special request</label>
+        <textarea id="extra-special-request" rows="3" placeholder="Tell us about any other requests you have…"></textarea>
       </div>
       <div class="btn-row">
-        <button class="btn-back" data-prev="6"><i class="fa fa-arrow-left"></i> Back</button>
-        <button class="btn-next" data-next="6">Review & Send Inquiry <i class="fa fa-arrow-right"></i></button>
+        <button class="btn-back" data-prev="5"><i class="fa fa-arrow-left"></i> Back</button>
+        <button class="btn-next" data-next="5">Review & Send Inquiry <i class="fa fa-arrow-right"></i></button>
       </div>
     </div>
 
-    <!-- STEP 7 -->
-    <div class="panel" id="panel-7">
+    <!-- STEP 6 -->
+    <div class="panel" id="panel-6">
       <div class="panel-head">
         <h2>Almost there!</h2>
         <p>Fill in your details and send your inquiry. We reply within 24 hours.</p>
@@ -674,7 +659,7 @@ input[type=range]::-webkit-slider-thumb {
         <div class="promo-msg" id="promo-msg"></div>
       </div>
 
-      <div class="val-error" id="err-7"><i class="fa-solid fa-circle-exclamation"></i> <span id="err-7-msg">Please fill in all required fields.</span></div>
+      <div class="val-error" id="err-6"><i class="fa-solid fa-circle-exclamation"></i> <span id="err-6-msg">Please fill in all required fields.</span></div>
       <div class="form-grid">
         <div class="f-field">
           <label>First Name <span class="req">*</span></label>
@@ -718,7 +703,7 @@ input[type=range]::-webkit-slider-thumb {
         </div>
       </div>
       <div class="btn-row">
-        <button class="btn-back" data-prev="7"><i class="fa fa-arrow-left"></i> Back</button>
+        <button class="btn-back" data-prev="6"><i class="fa fa-arrow-left"></i> Back</button>
         <button class="btn-next" id="submit-btn"><i class="fa fa-paper-plane"></i> Send My Inquiry</button>
       </div>
 
@@ -819,7 +804,7 @@ function parseFirestoreFields(fields) {
 
 document.addEventListener('DOMContentLoaded', function() {
 
-const S = { step:1, destinations:[], duration:7, activities:[], hotel:'', arrival:'', departure:'', adults:2, children:0, extras:[], promo:'', promoLabel:'', promoTimesUsed:0 };
+const S = { step:1, destinations:[], duration:7, activities:[], hotel:'', arrival:'', departure:'', adults:2, children:0, childrenAges:[], flightTicketFile:null, extras:[], promo:'', promoLabel:'', promoTimesUsed:0 };
 
 /* ── PROMO CODE (validated live against Firestore - managed from the
    KemetianTours Events Admin desktop app) ── */
@@ -895,7 +880,7 @@ async function applyPromo() {
 
 /* ── NAVIGATION ── */
 function updateTabs() {
-  for (let i = 1; i <= 7; i++) {
+  for (let i = 1; i <= 6; i++) {
     const t = document.getElementById('tab-' + i);
     if (!t) continue;
     t.classList.remove('active','done');
@@ -906,7 +891,7 @@ function updateTabs() {
 
 function showPanel(n) {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  const el = document.getElementById(n <= 7 ? 'panel-' + n : 'panel-success');
+  const el = document.getElementById(n <= 6 ? 'panel-' + n : 'panel-success');
   if (el) el.classList.add('active');
   updateTabs();
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -921,7 +906,7 @@ function jumpTo(n) {
 function next(from) {
   if (!validateStep(from)) return;
   S.step = from + 1;
-  if (S.step === 7) buildInquirySummary();
+  if (S.step === 6) buildInquirySummary();
   showPanel(S.step);
 }
 
@@ -938,13 +923,32 @@ function clearFieldErr(id) {
   const er = document.getElementById('err-' + id);
   if(el) el.classList.remove('invalid');
   if(er) er.classList.remove('show');
-  clearErr(7);
+  clearErr(6);
 }
 
 function validateStep(step) {
   if (step === 1) {
     if (S.destinations.length === 0) { showErr(1); return false; }
     clearErr(1); return true;
+  }
+  if (step === 2) {
+    const arr = document.getElementById('arr').value;
+    if (!arr) {
+      document.getElementById('err-2-msg').textContent = 'Please select an arrival date.';
+      document.getElementById('arr').classList.add('invalid');
+      showErr(2); return false;
+    }
+    document.getElementById('arr').classList.remove('invalid');
+    if (S.children > 0) {
+      const ageInputs = document.querySelectorAll('.child-age-input');
+      for (const inp of ageInputs) {
+        if (inp.value === '' || Number(inp.value) < 0) {
+          document.getElementById('err-2-msg').textContent = 'Please enter the age for each child.';
+          showErr(2); return false;
+        }
+      }
+    }
+    clearErr(2); return true;
   }
   if (step === 3) {
     if (S.activities.length === 0) { showErr(3); return false; }
@@ -953,32 +957,6 @@ function validateStep(step) {
   if (step === 4) {
     if (!S.hotel) { showErr(4); return false; }
     clearErr(4); return true;
-  }
-  if (step === 5) {
-    const arr = document.getElementById('arr').value;
-    const dep = document.getElementById('dep').value;
-    if (!arr || !dep) {
-      document.getElementById('err-5-msg').textContent = 'Please fill in both arrival and departure dates.';
-      showErr(5); return false;
-    }
-    if (new Date(dep) <= new Date(arr)) {
-      document.getElementById('err-5-msg').textContent = 'Departure date must be after arrival date.';
-      document.getElementById('arr').classList.add('invalid');
-      document.getElementById('dep').classList.add('invalid');
-      showErr(5); return false;
-    }
-    // Check dates match selected duration
-    const diffDays = Math.round((new Date(dep) - new Date(arr)) / (1000 * 60 * 60 * 24));
-    if (diffDays !== S.duration) {
-      document.getElementById('err-5-msg').textContent =
-        'Your dates are ' + diffDays + ' days but you selected ' + S.duration + ' days. Please adjust your dates or go back and update your duration.';
-      document.getElementById('arr').classList.add('invalid');
-      document.getElementById('dep').classList.add('invalid');
-      showErr(5); return false;
-    }
-    document.getElementById('arr').classList.remove('invalid');
-    document.getElementById('dep').classList.remove('invalid');
-    clearErr(5); return true;
   }
   return true;
 }
@@ -991,16 +969,51 @@ function setDur(v) {
   const pct = ((v - 3) / 18) * 100;
   const r = document.getElementById('dur-range');
   if(r) r.style.background = `linear-gradient(to right, var(--teal) 0%, var(--teal) ${pct}%, var(--border) ${pct}%)`;
+  updateDeparture();
 }
 
-function updateDates() {
-  S.arrival   = document.getElementById('arr').value;
-  S.departure = document.getElementById('dep').value;
-  if (S.arrival && S.departure) {
-    const fmt = d => new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+function updateDeparture() {
+  S.arrival = document.getElementById('arr').value;
+  const fmt = d => new Date(d).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' });
+  if (S.arrival) {
+    const dep = new Date(S.arrival);
+    dep.setDate(dep.getDate() + S.duration);
+    S.departure = dep.toISOString().slice(0, 10);
+    document.getElementById('dep-display').value = fmt(S.departure);
     document.getElementById('s-dates').textContent = fmt(S.arrival) + ' — ' + fmt(S.departure);
+  } else {
+    S.departure = '';
+    document.getElementById('dep-display').value = '';
+    document.getElementById('s-dates').textContent = 'Not set yet';
   }
-  clearErr(5);
+  clearErr(2);
+}
+
+function renderChildAges() {
+  const wrap = document.getElementById('children-ages-wrap');
+  if (!wrap) return;
+  if (S.children <= 0) {
+    wrap.style.display = 'none';
+    wrap.innerHTML = '';
+    S.childrenAges = [];
+    return;
+  }
+  wrap.style.display = 'flex';
+  const prev = S.childrenAges || [];
+  wrap.innerHTML = '';
+  for (let i = 0; i < S.children; i++) {
+    const box = document.createElement('div');
+    box.className = 'field-box';
+    box.style.flex = '1 1 120px';
+    box.innerHTML = `<label>Child ${i + 1} Age</label><input type="number" min="0" max="17" class="child-age-input" data-child-index="${i}" value="${prev[i] != null ? prev[i] : ''}" placeholder="Age">`;
+    wrap.appendChild(box);
+  }
+  wrap.querySelectorAll('.child-age-input').forEach(inp => {
+    inp.addEventListener('input', function() {
+      S.childrenAges[parseInt(this.dataset.childIndex)] = this.value === '' ? '' : parseInt(this.value);
+      clearErr(2);
+    });
+  });
 }
 
 function buildInquirySummary() {
@@ -1033,15 +1046,17 @@ async function submitForm() {
   if (!email || !emailRx.test(email)) { document.getElementById('femail').classList.add('invalid'); document.getElementById('err-femail').classList.add('show'); valid = false; }
 
   if (!valid) {
-    document.getElementById('err-7-msg').textContent = 'Please correct the fields marked in red.';
-    showErr(7);
+    document.getElementById('err-6-msg').textContent = 'Please correct the fields marked in red.';
+    showErr(6);
     return;
   }
-  clearErr(7);
+  clearErr(6);
 
   const btn = document.getElementById('submit-btn');
   btn.disabled = true;
   btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Sending…';
+
+  const specialRequest = document.getElementById('extra-special-request');
 
   const payload = {
     subject: 'Custom Tour Inquiry – ' + fname + ' ' + lname + (S.promo ? ' [PROMO: ' + S.promo + ']' : ''),
@@ -1060,17 +1075,24 @@ async function submitForm() {
     departure_date: S.departure || '—',
     adults: String(S.adults),
     children: String(S.children),
+    children_ages: (S.childrenAges && S.childrenAges.length) ? S.childrenAges.join(', ') : '—',
     extra_services: S.extras.join(', ') || 'None',
+    special_request: (specialRequest && specialRequest.value.trim()) || '—',
     promo_code: S.promo || 'Not used',
     discount_applied: S.promo ? S.promoLabel + ' OFF' : 'None',
     notes: document.getElementById('fnotes').value || '—'
   };
 
   try {
+    const formData = new FormData();
+    formData.append('access_key', '41984132-1850-4442-9137-8a2712a50798');
+    Object.entries(payload).forEach(([k, v]) => formData.append(k, v));
+    if (S.flightTicketFile) formData.append('attachment', S.flightTicketFile);
+
     const response = await fetchWithTimeout('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify(Object.assign({}, payload, { access_key: '41984132-1850-4442-9137-8a2712a50798' }))
+      headers: { 'Accept': 'application/json' },
+      body: formData
     }, 20000);
     const result = await response.json();
 
@@ -1096,21 +1118,21 @@ async function submitForm() {
           '<i class="fa-solid fa-ticket"></i> Promo code applied — ' + S.promoLabel + ' discount confirmed on your tour!';
         document.getElementById('success-promo').classList.add('show');
       }
-      for (let i = 1; i <= 7; i++) { const t = document.getElementById('tab-' + i); if(t) t.classList.add('done'); }
+      for (let i = 1; i <= 6; i++) { const t = document.getElementById('tab-' + i); if(t) t.classList.add('done'); }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send My Inquiry';
-      document.getElementById('err-7-msg').textContent = 'Something went wrong. Please try again.';
-      showErr(7);
+      document.getElementById('err-6-msg').textContent = 'Something went wrong. Please try again.';
+      showErr(6);
     }
   } catch (e) {
     btn.disabled = false;
     btn.innerHTML = '<i class="fa fa-paper-plane"></i> Send My Inquiry';
-    document.getElementById('err-7-msg').textContent = e.name === 'AbortError'
+    document.getElementById('err-6-msg').textContent = e.name === 'AbortError'
       ? 'This is taking longer than expected. Please check your connection and try again.'
       : 'Network error. Please check your connection and try again.';
-    showErr(7);
+    showErr(6);
   }
 }
 
@@ -1223,10 +1245,14 @@ document.querySelectorAll('[data-hotel]').forEach(el => {
   });
 });
 
-// Date inputs
-['arr','dep'].forEach(id => {
-  const el = document.getElementById(id);
-  if(el) el.addEventListener('change', updateDates);
+// Arrival date input (departure is auto-calculated from duration)
+const arrInput = document.getElementById('arr');
+if(arrInput) arrInput.addEventListener('change', updateDeparture);
+
+// Flight ticket attachment
+const flightInput = document.getElementById('flight-ticket');
+if(flightInput) flightInput.addEventListener('change', function() {
+  S.flightTicketFile = this.files[0] || null;
 });
 
 // Pax counters
@@ -1241,6 +1267,7 @@ document.querySelectorAll('[data-pax]').forEach(el => {
     const txt = S.adults + ' adult' + (S.adults !== 1 ? 's' : '') +
       (S.children ? ', ' + S.children + ' child' + (S.children !== 1 ? 'ren' : '') : '');
     document.getElementById('s-pax').textContent = txt;
+    if (type === 'children') renderChildAges();
   });
 });
 

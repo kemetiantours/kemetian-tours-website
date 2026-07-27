@@ -13,11 +13,17 @@
 
 /* Responsive safety net: several Elementor widgets (notably the hero
    image) have a fixed pixel height baked into their per-widget inline
-   CSS with no matching width limit, so on narrow viewports the browser
-   preserves aspect ratio and blows the width past the container,
-   overflowing the page horizontally. Force every content image to
-   respect its container on small screens. */
+   CSS with no matching width limit. On narrow viewports the browser
+   preserves aspect ratio and blows the image width past its container;
+   because the container itself shrinks/grows to fit that image (rather
+   than stretching to its own parent), the overflow cascades outward and
+   the whole page gains horizontal scroll/blank space. Force both the
+   container and the image to respect the actual column width. */
     @media (max-width:1024px){
+        .elementor-widget-image .elementor-widget-container {
+            width:100%!important;
+            max-width:100%!important;
+        }
         .elementor-widget-image img,
         .elementor-widget-container > img {
             max-width:100%!important;
