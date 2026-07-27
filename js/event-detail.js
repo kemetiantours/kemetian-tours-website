@@ -53,6 +53,7 @@ const params = new URLSearchParams(window.location.search);
 const eventId = params.get("id");
 
 const root = document.getElementById("story-root");
+const loading = document.getElementById("story-loading");
 const detailError = document.getElementById("detail-error");
 const nav = document.getElementById("story-nav");
 
@@ -61,8 +62,15 @@ window.addEventListener("scroll", () => {
 });
 
 function showError() {
+  loading.hidden = true;
   detailError.hidden = false;
   root.hidden = true;
+}
+
+function showEvent() {
+  loading.hidden = true;
+  detailError.hidden = true;
+  root.hidden = false;
 }
 
 async function loadEvent() {
@@ -82,6 +90,7 @@ async function loadEvent() {
     const json = await res.json();
     const data = parseFirestoreFields(json.fields);
     renderEvent(data);
+    showEvent();
   } catch (err) {
     console.error("Failed to load event:", err);
     showError();

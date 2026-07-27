@@ -2,6 +2,12 @@
 
 * { box-sizing: border-box; }
 
+/* Author-origin rules like ".detail-error { display: flex }" below win
+   over the browser's [hidden]{display:none} UA rule regardless of
+   selector specificity, since they're the same property in a
+   later-loaded stylesheet. Force hidden elements to actually hide. */
+[hidden] { display: none !important; }
+
 html { scroll-behavior: smooth; }
 
 body.event-story {
@@ -380,6 +386,29 @@ body.event-story {
   color: #999;
   font-size: 1.1rem;
 }
+
+.story-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  text-align: center;
+  color: #999;
+  font-size: 1rem;
+}
+
+.story-spinner {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 203, 54, 0.25);
+  border-top-color: #FFCB36;
+  animation: story-spin 0.85s linear infinite;
+}
+
+@keyframes story-spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 720px) {
   .story-hero, .story-section { background-attachment: scroll; }
