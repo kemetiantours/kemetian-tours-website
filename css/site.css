@@ -63,6 +63,24 @@
     }
 }
 
+/* Hero logo: its mobile-breakpoint override sets a uniform -118px
+   margin on all four sides plus an 880px fixed container width - both
+   tuned for a much larger viewport. On phones the 880px box overflows
+   sideways and the equal negative margin yanks the whole thing toward
+   the top-left instead of the intended centered position. Give it a
+   sane, viewport-relative width and drop the stray margin so the
+   existing flex centering (align-self:center) can do its job. */
+@media (max-width:767px){
+    .elementor-343 .elementor-element.elementor-element-1966e29{
+        --container-widget-width: 70% !important;
+        width: 70% !important;
+        max-width: 70% !important;
+    }
+    .elementor-343 .elementor-element.elementor-element-1966e29 > .elementor-widget-container{
+        margin: 0 !important;
+    }
+}
+
 /* Events page floating button - stays visible while scrolling */
     .kt-events-bar{position:fixed;top:18px;right:18px;z-index:100000;display:inline-block;background:#FFCB36;color:#0f1417;font-family:'Outfit',sans-serif;font-weight:700;font-size:.85rem;padding:12px 20px;border-radius:999px;text-decoration:none;box-shadow:0 6px 18px rgba(0,0,0,0.25);}
     .kt-events-bar:hover{filter:brightness(0.95);}
