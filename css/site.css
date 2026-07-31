@@ -72,12 +72,15 @@
    existing flex centering (align-self:center) can do its job. */
 @media (max-width:767px){
     .elementor-343 .elementor-element.elementor-element-1966e29{
-        --container-widget-width: 70% !important;
-        width: 70% !important;
-        max-width: 70% !important;
+        --container-widget-width: 92% !important;
+        width: 92% !important;
+        max-width: 92% !important;
     }
     .elementor-343 .elementor-element.elementor-element-1966e29 > .elementor-widget-container{
         margin: 0 !important;
+    }
+    .elementor-343 .elementor-element.elementor-element-1966e29 img{
+        height: auto !important;
     }
 }
 
