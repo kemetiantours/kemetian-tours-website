@@ -247,11 +247,8 @@ footer .brand{font-family:Cinzel,serif;color:var(--teal);font-size:1.4rem;margin
   <div class="wrap">
     <div class="sec-head"><div class="eyebrow">Reservation</div><h2>Book Your Place</h2><div class="bar"></div></div>
     <form class="form-box" id="bookingForm" novalidate>
-      <input type="hidden" name="_subject" value="New Booking – Forntida Astronauter & Agneta Sjödin – Egypt 2027">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="Tour" value="Forntida Astronauter & Agneta Sjödin – Egypt 2027 (29 Mar – 11 Apr 2027)">
-      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="checkbox" name="botcheck" id="botcheck" style="display:none" tabindex="-1" autocomplete="off">
 
       <label for="name">Full name *</label>
       <input id="name" name="Full Name" type="text" required autocomplete="name" placeholder="As written in your passport">
@@ -293,19 +290,39 @@ footer .brand{font-family:Cinzel,serif;color:var(--teal);font-size:1.4rem;margin
 </footer>
 
 <script>
+const WEB3FORMS_KEY="41984132-1850-4442-9137-8a2712a50798";
 const form=document.getElementById('bookingForm'),msg=document.getElementById('msg'),btn=document.getElementById('submitBtn');
+const val=id=>(document.getElementById(id).value||'').trim();
 form.addEventListener('submit',async e=>{
   e.preventDefault();
   msg.className='msg';
   if(!form.checkValidity()){msg.textContent='Please fill in your name, email, number of travelers and room type.';msg.className='msg err';form.reportValidity();return;}
+  if(document.getElementById('botcheck').checked)return;
+  const room=(form.querySelector('input[name="Room Type"]:checked')||{}).value||'—';
+  const name=val('name'),email=val('email');
+  const payload={
+    access_key:WEB3FORMS_KEY,
+    subject:'New Booking – Forntida Astronauter & Agneta Sjödin – Egypt 2027',
+    from_name:name,replyto:email,
+    name:name,email:email,
+    phone:val('phone')||'—',
+    travelers:val('travelers'),
+    room_type:room,
+    event:'Forntida Astronauter & Agneta Sjödin – Egypt 2027',
+    event_date:'29 March – 11 April 2027',
+    notes:val('notes')||'—'
+  };
   btn.disabled=true;btn.textContent='Sending...';
+  const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),20000);
   try{
-    const r=await fetch('https://formsubmit.co/ajax/Bookings@kemetiantours.com',{method:'POST',headers:{'Accept':'application/json'},body:new FormData(form)});
+    const r=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload),signal:ctrl.signal});
     const d=await r.json();
-    if(r.ok&&(d.success==='true'||d.success===true)){msg.textContent='Thank you! Your booking request has been received. We will contact you shortly.';msg.className='msg ok';form.reset();}
-    else throw 0;
-  }catch(err){msg.innerHTML='Something went wrong. Please email us at <a href="mailto:Bookings@kemetiantours.com" style="color:inherit">Bookings@kemetiantours.com</a>.';msg.className='msg err';}
-  btn.disabled=false;btn.textContent='Send Booking Request';
+    if(d.success){msg.textContent='Thank you! Your booking request has been received. We will contact you shortly.';msg.className='msg ok';form.reset();}
+    else{console.error('Web3Forms:',d);throw new Error(d.message||'failed');}
+  }catch(err){
+    console.error(err);
+    msg.innerHTML='Something went wrong. Please try again or email us at <a href="mailto:Bookings@kemetiantours.com" style="color:inherit">Bookings@kemetiantours.com</a>.';msg.className='msg err';
+  }finally{clearTimeout(timer);btn.disabled=false;btn.textContent='Send Booking Request';}
 });
 </script>
 </body>
