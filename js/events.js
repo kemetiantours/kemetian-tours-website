@@ -46,12 +46,22 @@ function renderEvents() {
             <div class="event-card-price">
               <span class="price-now">${formatPrice(price)}</span>
             </div>
-            <a class="event-reserve-btn" href="event-detail.html?id=${encodeURIComponent(event.id)}">View Details</a>
+            <a class="event-reserve-btn" href="${eventLink(event)}">View Details</a>
           </div>
         </div>
       </article>
     `;
   }).join("");
+}
+
+// Events uploaded as their own HTML page (from the admin dashboard's
+// "Upload HTML Event") carry pageUrl like "/egypt-2027" and link straight
+// to that page; all other events use the built-in detail page.
+function eventLink(event) {
+  if (typeof event.pageUrl === "string" && /^\/[a-z0-9]+(-[a-z0-9]+)*$/.test(event.pageUrl)) {
+    return event.pageUrl;
+  }
+  return `event-detail.html?id=${encodeURIComponent(event.id)}`;
 }
 
 function escapeHtml(str) {
