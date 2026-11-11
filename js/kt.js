@@ -59,7 +59,7 @@ var KT_GA_ID = '';
         ['Will I receive a confirmation?','Yes — you\'ll get a confirmation email with your itinerary, payment receipt and contact details.'],
         ['Can I book for a group?','Absolutely. We offer special rates and custom itineraries for groups. Contact us to arrange it.']],
       'Payment & refunds':[
-        ['What payment methods do you accept?','Major credit cards, bank transfers and online payment gateways. Some packages allow installments.'],
+        ['What payment methods do you accept?','Major credit cards, bank transfers and online payment gateways.'],
         ['Is my payment refundable if I cancel?','It depends on the package — some allow free cancellation within a set period, others carry a fee. See our terms for details.'],
         ['Are there fees beyond the package price?','Any optional add-ons, taxes or service fees are always shown clearly before you confirm.'],
         ['What if my refund is delayed?','Processing times vary by payment method. If it takes longer than expected, contact us and we\'ll follow up.']],
