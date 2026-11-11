@@ -10,7 +10,9 @@
   const configScript = document.currentScript;
   const base = configScript.getAttribute("data-base") || "";
 
-  import(base + "js/firebase-config.js").then(({ firebaseConfig }) => {
+  // Resolve against the page URL; a bare "js/..." specifier is rejected by
+  // the browser's module loader, which silently disabled all admin edits.
+  import(new URL(base + "js/firebase-config.js", document.baseURI).href).then(({ firebaseConfig }) => {
     const url = `https://firestore.googleapis.com/v1/projects/${firebaseConfig.projectId}/databases/(default)/documents/siteContent/${pageId}?key=${firebaseConfig.apiKey}`;
 
     fetch(url)
