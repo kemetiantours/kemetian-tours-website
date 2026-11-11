@@ -52,33 +52,6 @@ var KT_GA_ID = '';
   /* ---------- FAQ tabs (homepage) ---------- */
   var tabs=document.getElementById('faqTabs'),panels=document.getElementById('faqPanels');
   if(tabs&&panels){
-    var faq={
-      'Booking':[
-        ['How do I book a tour package?','Book through our website, by phone or on WhatsApp. Choose your package, share traveller details and pay to confirm.'],
-        ['How far in advance should I book?','We recommend booking at least 2–3 months ahead, especially for peak season (October–April).'],
-        ['Will I receive a confirmation?','Yes — you\'ll get a confirmation email with your itinerary, payment receipt and contact details.'],
-        ['Can I book for a group?','Absolutely. We offer special rates and custom itineraries for groups. Contact us to arrange it.']],
-      'Payment & refunds':[
-        ['What payment methods do you accept?','Major credit cards, bank transfers and online payment gateways.'],
-        ['Is my payment refundable if I cancel?','It depends on the package — some allow free cancellation within a set period, others carry a fee. See our terms for details.'],
-        ['Are there fees beyond the package price?','Any optional add-ons, taxes or service fees are always shown clearly before you confirm.'],
-        ['What if my refund is delayed?','Processing times vary by payment method. If it takes longer than expected, contact us and we\'ll follow up.']],
-      'Travel requirements':[
-        ['Do I need a visa for Egypt?','It depends on your nationality. We can advise you and help with the visa process if needed.'],
-        ['What documents should I bring?','A valid passport, your visa if required, and a copy of your booking confirmation.'],
-        ['Can you help with flights?','Yes, we can arrange flight bookings as part of your travel package.']],
-      'On the trip':[
-        ['Will I have a tour guide?','Yes — most of our packages include a professional local Egyptologist guide.'],
-        ['What if my flight is delayed?','Let us know right away and we\'ll adjust your itinerary and transfers.'],
-        ['Can I request special meals?','Of course. Tell us your dietary preferences and we\'ll arrange suitable meals.'],
-        ['Is there 24/7 support while travelling?','Yes, our team is available around the clock throughout your journey.']]
-    },i=0;
-    Object.keys(faq).forEach(function(k){
-      var id='faq'+i;
-      tabs.insertAdjacentHTML('beforeend','<button class="tab" role="tab" aria-controls="'+id+'" aria-selected="'+(i===0)+'">'+k+'</button>');
-      panels.insertAdjacentHTML('beforeend','<div class="faq-panel" role="tabpanel" id="'+id+'"'+(i?' hidden':'')+'>'+faq[k].map(function(q){return '<details><summary>'+q[0]+'</summary><p>'+q[1]+'</p></details>'}).join('')+'</div>');
-      i++;
-    });
     tabs.addEventListener('click',function(e){
       var b=e.target.closest('.tab');if(!b)return;
       tabs.querySelectorAll('.tab').forEach(function(t){t.setAttribute('aria-selected',t===b)});
