@@ -117,7 +117,7 @@ section{padding:110px 0}
 .feat p{font-size:.9rem;color:var(--muted)}
 
 /* destinations */
-.dest-grid{display:grid;grid-auto-flow:dense;grid-template-columns:repeat(4,1fr);grid-auto-rows:260px;gap:16px;margin-top:50px}
+.dest-grid{display:grid;grid-auto-flow:dense;grid-template-columns:repeat(4,1fr);grid-auto-rows:230px;gap:16px;margin-top:50px}
 .dest{position:relative;border-radius:var(--r);overflow:hidden;color:#fff;display:flex;align-items:flex-end;padding:22px}
 .dest img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .8s}
 .dest::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(12,10,7,.85))}
@@ -235,7 +235,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 @media (max-width:980px){
   section{padding:80px 0}
   .about,.faq,.cb-grid{grid-template-columns:1fr;gap:50px}
-  .dest-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:220px}
+  .dest-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:200px}
   .dest.wide{grid-column:span 2}
   .steps{grid-template-columns:1fr 1fr;row-gap:20px}
   .pillars{grid-template-columns:1fr 1fr}
@@ -245,8 +245,8 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 }
 @media (max-width:560px){
   .wrap{padding:0 16px}
-  .dest-grid{grid-template-columns:1fr;grid-auto-rows:240px}
-  .dest.wide,.dest.tall{grid-column:auto;grid-row:auto}
+  .dest-grid{grid-template-columns:1fr 1fr;grid-auto-rows:170px;gap:10px}
+  .dest{padding:14px}.dest b{font-size:1.3rem}.dest small{display:none}
   .dest small{opacity:1;transform:none}
   .steps,.feats{grid-template-columns:1fr}
   .pillars{grid-template-columns:1fr;margin-top:44px}
@@ -434,19 +434,20 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 <script>
 (function(){
   var C='https://res.cloudinary.com/cqqzdbnz/image/upload/f_auto,q_auto,w_900/';
+  // [name, tagline, image, card shape, focal point]
   var dests=[
-    ['Luxor','The world\'s greatest open-air museum','v1785531508/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-3.57.50-PM-768x1024.webp','tall'],
-    ['Giza','The last wonder of the ancient world','v1785531488/kemetian/2025/11/2023_04_01_15_13_IMG_3271-768x1024.webp','wide'],
-    ['Aswan','Nubian colour on the Nile','v1785531492/kemetian/2025/11/2023_04_23_12_00_IMG_4441-1024x768.webp',''],
-    ['Siwa','Where tradition meets serenity','v1785531509/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.08.33-PM-768x1024.webp','tall'],
-    ['Cairo','A thousand minarets and a thousand years','v1785531502/kemetian/2025/11/MPNY1155-1024x768.webp',''],
-    ['Faiyum','Lakes, dunes and whale valley','v1785531511/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.27.44-PM-682x1024.webp',''],
-    ['Dahab','Red Sea reefs and Sinai calm','v1785531510/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.25.03-PM-576x1024.webp',''],
-    ['The White Desert','Chalk sculptures under the stars','v1785531512/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.32.56-PM-768x1024.webp','wide']
+    ['Giza','The last wonder of the ancient world','v1785531488/kemetian/2025/11/2023_04_01_15_13_IMG_3271-768x1024.webp','tall','42% 18%'],
+    ['Luxor','The world\'s greatest open-air museum','v1785531508/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-3.57.50-PM-768x1024.webp','tall','50% 35%'],
+    ['Aswan','Nubian colour on the Nile','v1785531492/kemetian/2025/11/2023_04_23_12_00_IMG_4441-1024x768.webp','wide','50% 58%'],
+    ['Cairo','A thousand minarets and a thousand years','v1785531502/kemetian/2025/11/MPNY1155-1024x768.webp','wide','50% 42%'],
+    ['Siwa','Where tradition meets serenity','v1785531509/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.08.33-PM-768x1024.webp','tall','50% 50%'],
+    ['Faiyum','Lakes, dunes and starry desert nights','v1785531511/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.27.44-PM-682x1024.webp','tall','50% 62%'],
+    ['Dahab','Red Sea reefs and Sinai calm','v1785531510/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.25.03-PM-576x1024.webp','tall','50% 45%'],
+    ['The White Desert','Chalk sculptures under the stars','v1785531512/kemetian/2025/11/WhatsApp-Image-2025-11-30-at-4.32.56-PM-768x1024.webp','tall','50% 72%']
   ];
   document.getElementById('destGrid').innerHTML=dests.map(function(d){
     var msg=encodeURIComponent("Hi Kemetian Tours, I'm interested in a trip to "+d[0]+".");
-    return '<a class="dest '+d[3]+'" href="https://wa.me/201204137431?text='+msg+'" target="_blank" rel="noopener"><img src="'+C+d[2]+'" alt="'+d[0]+', Egypt" loading="lazy"><span><b>'+d[0]+'</b><small>'+d[1]+' →</small></span></a>';
+    return '<a class="dest '+d[3]+'" href="https://wa.me/201204137431?text='+msg+'" target="_blank" rel="noopener"><img src="'+C+d[2]+'" alt="'+d[0]+', Egypt" loading="lazy" style="object-position:'+d[4]+'"><span><b>'+d[0]+'</b><small>'+d[1]+' →</small></span></a>';
   }).join('');
 
   var faq={
