@@ -172,7 +172,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 /* video backgrounds */
 .vbg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 .vbg .poster{position:absolute;inset:0;background:center/cover;animation:kenburns 24s ease-in-out infinite alternate}
-.vbg iframe{position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%) scale(1.15);border:0;opacity:0;transition:opacity 1.6s ease}
+.vbg iframe{position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%) scale(1.35);border:0;opacity:0;transition:opacity 1.6s ease}
 .vbg.playing iframe{opacity:1}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.12) translate(-1.5%,-1%)}}
 .hero{background:var(--night)}
@@ -395,7 +395,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
       <div class="socials">
         <a href="https://www.facebook.com/kemetiantours" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
         <a href="https://www.instagram.com/kemetiantours" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
-        <a href="https://www.tripadvisor.in/Attraction_Review-g60553-d34345306-Reviews-Kemetian_Tours_Egypt-Sheridan_Wyoming.html" target="_blank" rel="noopener" aria-label="TripAdvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+        <a href="https://www.tripadvisor.in/Attraction_Review-g60553-d34345306-Reviews-Kemetian_Tours_Egypt-Sheridan_Wyoming.html" target="_blank" rel="noopener" aria-label="TripAdvisor"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="7.6" cy="13" r="2.9" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16.4" cy="13" r="2.9" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7.6" cy="13" r="1" fill="currentColor"/><circle cx="16.4" cy="13" r="1" fill="currentColor"/><path d="M3 9.2h3.2M17.8 9.2H21M6.2 9.2C8 7.6 10 7 12 7s4 .6 5.8 2.2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
       </div>
     </div>
     <div class="cb-cards reveal">
@@ -520,7 +520,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
     var f=document.createElement('iframe');
     f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1';
     f.allow='autoplay; encrypted-media; picture-in-picture';f.referrerPolicy='strict-origin-when-cross-origin';f.title='';f.tabIndex=-1;f.setAttribute('aria-hidden','true');
-    f.addEventListener('load',function(){setTimeout(function(){box.classList.add('playing')},1200)});
+    f.addEventListener('load',function(){setTimeout(function(){box.classList.add('playing')},3500)});
     box.appendChild(f);
   }
   if(!reduce){
