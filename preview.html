@@ -17,6 +17,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://res.cloudinary.com">
+<link rel="preconnect" href="https://www.youtube-nocookie.com">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://i.ytimg.com">
+<link rel="dns-prefetch" href="https://www.google.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="fonts/google/outfit.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -173,7 +177,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 /* video backgrounds */
 .vbg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 .vbg .poster{position:absolute;inset:0;background:center/cover;animation:kenburns 24s ease-in-out infinite alternate}
-.vbg iframe,.vbg>div:not(.poster){position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%) scale(1.35);border:0;opacity:0;transition:opacity 1.6s ease}
+.vbg iframe,.vbg>div:not(.poster){position:absolute;top:50%;left:50%;width:max(130vw,231vh);height:max(73.2vw,130vh);transform:translate(-50%,-50%);border:0;opacity:0;transition:opacity 1.6s ease}
 .vbg{background:#000}
 .vbg.playing iframe{opacity:1}
 .vbg.playing .poster{opacity:0;transition:opacity 1.6s ease}
@@ -533,12 +537,12 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
     var timer;
     new YT.Player(holder,{
       videoId:box.getAttribute('data-yt'),host:'https://www.youtube-nocookie.com',
-      playerVars:{autoplay:1,mute:1,controls:0,playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0},
+      playerVars:{autoplay:1,mute:1,controls:0,vq:'hd1080',playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0},
       events:{
         onReady:function(e){
           var f=e.target.getIframe();f.setAttribute('tabindex','-1');f.setAttribute('aria-hidden','true');f.title='';
           (window.ktPlayers=window.ktPlayers||[]).push(e.target);
-          e.target.mute();e.target.playVideo();
+          e.target.mute();try{e.target.setPlaybackQuality('hd1080')}catch(_){}e.target.playVideo();
           clearInterval(timer);
           timer=setInterval(function(){
             try{var d=e.target.getDuration(),c=e.target.getCurrentTime();
@@ -552,7 +556,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
         },
         onStateChange:function(e){
           if(e.data===YT.PlayerState.PLAYING&&!box.classList.contains('playing')){
-            setTimeout(function(){box.classList.add('playing')},1500);
+            setTimeout(function(){box.classList.add('playing')},700);
           }
           if(e.data===YT.PlayerState.ENDED){e.target.seekTo(0.05,true);e.target.playVideo()}
         }
@@ -564,8 +568,10 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
     if(ytReady)makePlayer(box);else{ytQueue.push(box);ytLoadApi()}
   }
   if(!reduce&&vboxes.length){
-    var vio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){loadVideo(en.target);vio.unobserve(en.target)}})},{rootMargin:'300px'});
-    vboxes.forEach(function(b){vio.observe(b)});
+    // hero video starts loading right away; the rest when they get close
+    ytLoadApi();loadVideo(vboxes[0]);
+    var vio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){loadVideo(en.target);vio.unobserve(en.target)}})},{rootMargin:'900px'});
+    vboxes.slice(1).forEach(function(b){vio.observe(b)});
   }
 
   // parallax (desktop + mobile, cheap transform only)
