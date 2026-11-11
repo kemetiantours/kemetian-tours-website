@@ -239,9 +239,10 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 /* ===== desktop: framed hero video ===== */
 .hero-chip{display:none}
 @media (min-width:981px){
-  .hero{min-height:calc(100svh - 38px);align-items:center;padding:110px 0 56px;background:radial-gradient(ellipse 70% 90% at 78% 50%,#241c12 0%,var(--night) 62%)}
+  .hero{min-height:calc(100svh - 44px);align-items:center;padding:110px 0 56px;background:radial-gradient(ellipse 70% 90% at 78% 50%,#241c12 0%,var(--night) 62%)}
   .hero::before{background:radial-gradient(ellipse at 20% 60%,rgba(212,174,110,.07),transparent 55%)}
   .hero .vbg{inset:auto;top:104px;bottom:44px;right:max(24px,calc((100vw - var(--wrap))/2 + 24px));width:min(46vw,600px);border-radius:26px;border:1px solid rgba(212,174,110,.45);box-shadow:0 40px 90px -30px rgba(0,0,0,.8),0 0 0 10px rgba(212,174,110,.05);z-index:1}
+  .hero .vbg iframe,.hero .vbg>div:not(.poster){width:calc(2*max(100cqw,177.78cqh));height:calc(2*max(56.25cqw,100cqh));transform:translate(-50%,-50%) scale(.5)}
   .hero .vbg::after{content:"";position:absolute;inset:12px;border:1px solid rgba(255,255,255,.16);border-radius:18px;z-index:3;pointer-events:none}
   .hero .vbg::before{content:"";position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,transparent 60%,rgba(12,10,7,.55))}
   .hero .wrap{display:block}
