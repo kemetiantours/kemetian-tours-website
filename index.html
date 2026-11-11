@@ -172,7 +172,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 /* video backgrounds */
 .vbg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 .vbg .poster{position:absolute;inset:0;background:center/cover;animation:kenburns 24s ease-in-out infinite alternate}
-.vbg iframe{position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%) scale(1.35);border:0;opacity:0;transition:opacity 1.6s ease}
+.vbg iframe,.vbg>div:not(.poster){position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%) scale(1.35);border:0;opacity:0;transition:opacity 1.6s ease}
 .vbg.playing iframe{opacity:1}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.12) translate(-1.5%,-1%)}}
 .hero{background:var(--night)}
@@ -361,7 +361,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 </section>
 
 <section class="cine">
-  <div class="vbg" data-yt="eW-RoTrjFbw"><div class="poster" style="background-image:url('https://res.cloudinary.com/cqqzdbnz/image/upload/f_auto,q_auto,w_1600/v1785531503/kemetian/2025/11/Revisi-3-1024x683.webp')"></div></div>
+  <div class="vbg" data-yt="eW-RoTrjFbw"><div class="poster" style="background-image:url('https://i.ytimg.com/vi/eW-RoTrjFbw/maxresdefault.jpg')"></div></div>
   <div class="wrap reveal">
     <span class="eyebrow">Seasonal &amp; limited-time journeys</span>
     <h2 class="split" data-edit="home.offer_title">Don't just read about the past. <em>Walk through it.</em></h2>
@@ -513,19 +513,48 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
     Array.prototype.forEach.call(g.children,function(c,i){c.style.transitionDelay=(i*0.09)+'s'});
   });
 
-  // YouTube background videos: load when near the viewport, fade in once playing
+  // YouTube background videos via the IFrame API: no playlist-reload on loop,
+  // jump back to the start just before the end, fade in only once really playing.
+  var vboxes=[].slice.call(document.querySelectorAll('.vbg[data-yt]')),ytQueue=[],ytReady=false;
+  function ytLoadApi(){
+    if(window.YT&&window.YT.Player){ytReady=true;return}
+    if(document.getElementById('yt-api'))return;
+    var t=document.createElement('script');t.id='yt-api';t.src='https://www.youtube.com/iframe_api';document.head.appendChild(t);
+  }
+  window.onYouTubeIframeAPIReady=function(){ytReady=true;ytQueue.splice(0).forEach(makePlayer)};
+  function makePlayer(box){
+    var holder=document.createElement('div');box.appendChild(holder);
+    var timer;
+    new YT.Player(holder,{
+      videoId:box.getAttribute('data-yt'),host:'https://www.youtube-nocookie.com',
+      playerVars:{autoplay:1,mute:1,controls:0,playsinline:1,rel:0,modestbranding:1,iv_load_policy:3,disablekb:1,fs:0,cc_load_policy:0},
+      events:{
+        onReady:function(e){
+          var f=e.target.getIframe();f.setAttribute('tabindex','-1');f.setAttribute('aria-hidden','true');f.title='';
+          (window.ktPlayers=window.ktPlayers||[]).push(e.target);
+          e.target.mute();e.target.playVideo();
+          clearInterval(timer);
+          timer=setInterval(function(){
+            try{var d=e.target.getDuration(),c=e.target.getCurrentTime();
+              if(d&&c>d-0.6){e.target.seekTo(0.05,true)}}catch(_){}
+          },200);
+        },
+        onStateChange:function(e){
+          if(e.data===YT.PlayerState.PLAYING&&!box.classList.contains('playing')){
+            setTimeout(function(){box.classList.add('playing')},1500);
+          }
+          if(e.data===YT.PlayerState.ENDED){e.target.seekTo(0.05,true);e.target.playVideo()}
+        }
+      }
+    });
+  }
   function loadVideo(box){
     if(box.dataset.loaded)return;box.dataset.loaded=1;
-    var id=box.getAttribute('data-yt');
-    var f=document.createElement('iframe');
-    f.src='https://www.youtube-nocookie.com/embed/'+id+'?autoplay=1&mute=1&loop=1&playlist='+id+'&controls=0&playsinline=1&rel=0&modestbranding=1&iv_load_policy=3&disablekb=1&enablejsapi=1';
-    f.allow='autoplay; encrypted-media; picture-in-picture';f.referrerPolicy='strict-origin-when-cross-origin';f.title='';f.tabIndex=-1;f.setAttribute('aria-hidden','true');
-    f.addEventListener('load',function(){setTimeout(function(){box.classList.add('playing')},3500)});
-    box.appendChild(f);
+    if(ytReady)makePlayer(box);else{ytQueue.push(box);ytLoadApi()}
   }
-  if(!reduce){
+  if(!reduce&&vboxes.length){
     var vio=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting){loadVideo(en.target);vio.unobserve(en.target)}})},{rootMargin:'300px'});
-    document.querySelectorAll('.vbg[data-yt]').forEach(function(b){vio.observe(b)});
+    vboxes.forEach(function(b){vio.observe(b)});
   }
 
   // parallax (desktop + mobile, cheap transform only)
