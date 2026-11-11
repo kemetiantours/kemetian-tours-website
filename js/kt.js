@@ -204,24 +204,68 @@ var KT_GA_ID = '';
     if(nx)nx.addEventListener('click',function(){step(1)});
   }
 
-  /* ---------- gallery lightbox ---------- */
-  var gal=[].slice.call(document.querySelectorAll('[data-lightbox] a'));
-  if(gal.length){
-    var lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');lb.setAttribute('aria-label','Photo viewer');
+  /* ---------- gallery lightbox (works for galleries added later too) ---------- */
+  var lb=null,lbItems=[],cur=0,lastFocus=null;
+  function lbBuild(){
+    lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');lb.setAttribute('aria-label','Photo viewer');
     lb.innerHTML='<button class="lb-x" aria-label="Close"><i class="fa-solid fa-xmark"></i></button><button class="lb-p" aria-label="Previous photo"><i class="fa-solid fa-arrow-left"></i></button><figure><img alt=""><figcaption></figcaption></figure><button class="lb-n" aria-label="Next photo"><i class="fa-solid fa-arrow-right"></i></button>';
     document.body.appendChild(lb);
-    var cur=0,img=lb.querySelector('img'),cap=lb.querySelector('figcaption'),last=null;
-    var show=function(i){cur=(i+gal.length)%gal.length;var a=gal[cur];img.src=a.getAttribute('href');img.alt=a.querySelector('img').alt;cap.textContent=a.getAttribute('data-caption')||a.querySelector('img').alt};
-    var open=function(i){last=document.activeElement;show(i);lb.classList.add('on');document.documentElement.style.overflow='hidden';lb.querySelector('.lb-x').focus()};
-    var close=function(){lb.classList.remove('on');document.documentElement.style.overflow='';if(last)last.focus()};
-    gal.forEach(function(a,i){a.addEventListener('click',function(e){e.preventDefault();open(i)})});
-    lb.querySelector('.lb-x').addEventListener('click',close);
-    lb.querySelector('.lb-p').addEventListener('click',function(){show(cur-1)});
-    lb.querySelector('.lb-n').addEventListener('click',function(){show(cur+1)});
-    lb.addEventListener('click',function(e){if(e.target===lb)close()});
-    document.addEventListener('keydown',function(e){if(!lb.classList.contains('on'))return;if(e.key==='Escape')close();if(e.key==='ArrowLeft')show(cur-1);if(e.key==='ArrowRight')show(cur+1)});
+    lb.querySelector('.lb-x').addEventListener('click',lbClose);
+    lb.querySelector('.lb-p').addEventListener('click',function(){lbShow(cur-1)});
+    lb.querySelector('.lb-n').addEventListener('click',function(){lbShow(cur+1)});
+    lb.addEventListener('click',function(e){if(e.target===lb)lbClose()});
+    document.addEventListener('keydown',function(e){if(!lb.classList.contains('on'))return;if(e.key==='Escape')lbClose();if(e.key==='ArrowLeft')lbShow(cur-1);if(e.key==='ArrowRight')lbShow(cur+1)});
     var sx=0;lb.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
-    lb.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)show(cur+(dx<0?1:-1))},{passive:true});
+    lb.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)lbShow(cur+(dx<0?1:-1))},{passive:true});
+  }
+  function lbShow(i){cur=(i+lbItems.length)%lbItems.length;var a=lbItems[cur],im=a.querySelector('img');lb.querySelector('img').src=a.getAttribute('href');lb.querySelector('img').alt=im?im.alt:'';lb.querySelector('figcaption').textContent=a.getAttribute('data-caption')||(im?im.alt:'')}
+  function lbClose(){lb.classList.remove('on');document.documentElement.style.overflow='';if(lastFocus)lastFocus.focus()}
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('[data-lightbox] a');if(!a)return;
+    e.preventDefault();if(!lb)lbBuild();
+    lbItems=[].slice.call(a.closest('[data-lightbox]').querySelectorAll('a'));lastFocus=a;
+    lbShow(lbItems.indexOf(a));lb.classList.add('on');document.documentElement.style.overflow='hidden';lb.querySelector('.lb-x').focus();
+  });
+
+  /* ---------- photos managed from the dashboard ----------
+     Firestore document siteContent/media. Fields (all optional):
+       city_<slug>_image    one image URL  -> destination card + destination page header
+       city_<slug>_gallery  list of photos -> destination page gallery
+       gallery_home         list of photos -> homepage "Our travellers" gallery
+     A list is an array of strings, or one string with a photo per line.
+     Each photo is "URL" or "URL | caption".
+     Slugs: giza luxor aswan cairo siwa faiyum dahab white-desert */
+  function mediaList(f){
+    if(!f)return [];
+    var raw=f.arrayValue?(f.arrayValue.values||[]).map(function(v){return v.stringValue||(v.mapValue&&v.mapValue.fields&&v.mapValue.fields.url&&(v.mapValue.fields.url.stringValue+(v.mapValue.fields.caption?' | '+v.mapValue.fields.caption.stringValue:'')))||''}):String(f.stringValue||'').split(/\n+/);
+    return raw.map(function(l){var p=String(l).split('|');return {url:p[0].trim(),caption:(p.slice(1).join('|')||'').trim()}}).filter(function(x){return /^https:\/\//.test(x.url)});
+  }
+  function esc(t){var d=document.createElement('div');d.textContent=t||'';return d.innerHTML}
+  function sized(url,w){return url.replace('/image/upload/','/image/upload/f_auto,q_auto,w_'+w+'/').replace(/(f_auto,q_auto,w_\d+\/)+/,'f_auto,q_auto,w_'+w+'/')}
+  function renderGallery(el,items,fallbackAlt){
+    el.innerHTML=items.map(function(it){var alt=it.caption||fallbackAlt;return '<a href="'+esc(sized(it.url,1600))+'" data-caption="'+esc(it.caption)+'"><img src="'+esc(sized(it.url,700))+'" alt="'+esc(alt)+'" loading="lazy"></a>'}).join('');
+  }
+  var needsMedia=document.querySelector('[data-dest-grid],[data-city-hero],[data-city-gallery],[data-media-gallery]');
+  if(needsMedia){
+    import(new URL('js/firebase-config.js',document.baseURI).href).then(function(m){
+      var c=m.firebaseConfig;
+      return fetch('https://firestore.googleapis.com/v1/projects/'+c.projectId+'/databases/(default)/documents/siteContent/media?key='+c.apiKey);
+    }).then(function(r){return r&&r.ok?r.json():null}).then(function(j){
+      var F=(j&&j.fields)||{};
+      D.forEach(function(d){
+        var img=F['city_'+d[0]+'_image']&&F['city_'+d[0]+'_image'].stringValue;
+        if(img&&/^https:\/\//.test(img)){
+          document.querySelectorAll('[data-dest-grid] a[href$="'+d[0]+'"] img').forEach(function(i){i.src=sized(img,900);i.style.objectPosition='50% 50%'});
+          document.querySelectorAll('[data-city-hero="'+d[0]+'"]').forEach(function(h){h.style.backgroundImage="url('"+sized(img,1920)+"')";h.style.backgroundPosition='50% 50%'});
+        }
+        var g=mediaList(F['city_'+d[0]+'_gallery']);
+        if(g.length)document.querySelectorAll('[data-city-gallery="'+d[0]+'"]').forEach(function(el){renderGallery(el,g,d[1]+', Egypt');var s=el.closest('[data-gallery-section]');if(s)s.hidden=false});
+      });
+      document.querySelectorAll('[data-media-gallery]').forEach(function(el){
+        var g=mediaList(F[el.getAttribute('data-media-gallery')]);
+        if(g.length){renderGallery(el,g,'Kemetian Tours travellers in Egypt');var s=el.closest('[data-gallery-section]');if(s){s.hidden=false;s.querySelectorAll('.reveal').forEach(function(x){x.classList.add('in')})}}
+      });
+    }).catch(function(e){console.error('media: could not load photos',e)});
   }
 
   /* ---------- reveal on scroll ---------- */
