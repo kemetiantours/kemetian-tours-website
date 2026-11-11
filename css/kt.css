@@ -384,3 +384,5 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
   .day{grid-template-columns:44px 1fr;gap:16px}.day .dn{width:44px;height:44px;font-size:1.1rem}.itin::before{left:21px}
   .lb-p,.lb-n{top:auto;bottom:24px;transform:none}.lb-p{left:calc(50% - 60px)}.lb-n{right:calc(50% - 60px)}
 }
+.page-hero.img .wrap{width:100%}
+.day .dn,.ev-price,.dur-number{font-variant-numeric:lining-nums}
