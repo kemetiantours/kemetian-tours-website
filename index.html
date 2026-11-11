@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Kemetian Tours | Tailor-Made Egypt Tours</title>
 <meta name="description" content="Kemetian Tours designs tailor-made tours across Egypt for solo travellers, couples, families and groups — Cairo, Giza, Luxor, Aswan, Siwa and beyond. Plan your custom Egypt trip with local Egyptology experts.">
 <link rel="canonical" href="https://kemetiantours.com/">
@@ -261,7 +261,7 @@ try {
   const events = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   grid.innerHTML = events.length ? events.map((e) => `
     <a class="ev-card" href="${link(e)}">
-      <div class="ev-img" style="background-image:url('${esc(e.imageUrl) || "img/logo-gold.png"}')"></div>
+      ${e.imageUrl ? `<img class="ev-img" src="${esc(e.imageUrl)}" alt="${esc(e.title)}" loading="lazy">` : `<div class="ev-img ph"></div>`}
       <div class="ev-body">
         <span class="ev-date">${fmt(e.startDate)}${e.location ? " · " + esc(e.location) : ""}</span>
         <h3>${esc(e.title)}</h3>

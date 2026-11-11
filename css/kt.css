@@ -64,7 +64,8 @@ section{padding:110px 0}
 .ev-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px}
 .ev-card{background:var(--night-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column;transition:.3s}
 .ev-card:hover{transform:translateY(-6px);border-color:var(--gold)}
-.ev-img{aspect-ratio:16/10;background:#222 center/cover}
+.ev-img{display:block;width:100%;height:auto;background:#1a1610}
+.ev-img.ph{aspect-ratio:16/9;background:#1a1610 url('../img/logo-gold.png') center/90px no-repeat}
 .ev-body{padding:24px;display:flex;flex-direction:column;gap:10px;flex:1}
 .ev-date{color:var(--gold);font-size:.82rem;letter-spacing:.14em;text-transform:uppercase}
 .ev-body h3{font-size:1.6rem;color:#fff}
@@ -386,3 +387,14 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 }
 .page-hero.img .wrap{width:100%}
 .day .dn,.ev-price,.dur-number{font-variant-numeric:lining-nums}
+
+/* ---- iPhone notch / safe areas (viewport-fit=cover) ---- */
+.announce{padding-top:calc(9px + env(safe-area-inset-top))}
+.nav.stuck,.nav.solid{padding-top:calc(10px + env(safe-area-inset-top))}
+.wa-float{bottom:calc(20px + env(safe-area-inset-bottom));right:calc(20px + env(safe-area-inset-right))}
+.wrap{padding-left:max(24px,env(safe-area-inset-left));padding-right:max(24px,env(safe-area-inset-right))}
+@media (max-width:560px){.wrap{padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}.hero{padding-bottom:96px}}
+.nav-links{padding-top:env(safe-area-inset-top)}
+/* ---- scroll cue fades away once you start scrolling ---- */
+.scroll-cue{transition:opacity .4s ease,visibility .4s}
+.scroll-cue.gone{opacity:0;visibility:hidden}

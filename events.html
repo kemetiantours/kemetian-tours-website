@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Upcoming Events &amp; Group Departures | Kemetian Tours</title>
 <meta name="description" content="See Kemetian Tours&#x27; upcoming small-group departures and seasonal experiences across Egypt.">
 <link rel="canonical" href="https://kemetiantours.com/events">
@@ -96,7 +96,7 @@ try {
   if (!events.length) { grid.innerHTML = ""; empty.hidden = false; }
   else grid.innerHTML = events.map((e) => `
     <a class="ev-card" href="${link(e)}">
-      <div class="ev-img" style="background-image:url('${esc(e.imageUrl) || "img/logo-gold.png"}')"></div>
+      ${e.imageUrl ? `<img class="ev-img" src="${esc(e.imageUrl)}" alt="${esc(e.title)}" loading="lazy">` : `<div class="ev-img ph"></div>`}
       <div class="ev-body">
         <span class="ev-date">${fmt(e.startDate)}${e.location ? " · " + esc(e.location) : ""}</span>
         <h3>${esc(e.title)}</h3>

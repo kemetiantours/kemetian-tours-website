@@ -101,6 +101,10 @@ var KT_GA_ID = '';
     links.addEventListener('click',function(e){if(e.target.closest('a')&&links.classList.contains('open'))burger.click()});
   }
 
+  /* ---------- scroll cue: hide after scrolling a little, show again at the top ---------- */
+  var cue=document.querySelector('.scroll-cue');
+  if(cue){var cueUpd=function(){cue.classList.toggle('gone',window.scrollY>60)};window.addEventListener('scroll',cueUpd,{passive:true});cueUpd()}
+
   /* ---------- word-by-word headings ---------- */
   document.querySelectorAll('main h2:not(.no-split)').forEach(function(h){
     if(!h.classList.contains('split'))h.classList.add('split');
