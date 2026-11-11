@@ -173,7 +173,10 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 .vbg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 .vbg .poster{position:absolute;inset:0;background:center/cover;animation:kenburns 24s ease-in-out infinite alternate}
 .vbg iframe,.vbg>div:not(.poster){position:absolute;top:50%;left:50%;width:100vw;height:56.25vw;min-height:100%;min-width:177.78vh;transform:translate(-50%,-50%) scale(1.35);border:0;opacity:0;transition:opacity 1.6s ease}
+.vbg{background:#000}
 .vbg.playing iframe{opacity:1}
+.vbg.playing .poster{opacity:0;transition:opacity 1.6s ease}
+.vbg.dip iframe{opacity:0!important;transition:opacity .45s ease!important}
 @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.12) translate(-1.5%,-1%)}}
 .hero{background:var(--night)}
 .hero::before{z-index:1}
@@ -536,7 +539,12 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
           clearInterval(timer);
           timer=setInterval(function(){
             try{var d=e.target.getDuration(),c=e.target.getCurrentTime();
-              if(d&&c>d-0.6){e.target.seekTo(0.05,true)}}catch(_){}
+              if(d&&c>d-0.9&&!box.dataset.dip){
+                box.dataset.dip=1;box.classList.add('dip');
+                setTimeout(function(){e.target.seekTo(0.05,true)},480);
+                setTimeout(function(){box.classList.remove('dip')},1500);
+                setTimeout(function(){delete box.dataset.dip},2200);
+              }}catch(_){}
           },200);
         },
         onStateChange:function(e){
