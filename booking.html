@@ -8,62 +8,53 @@
 <meta name="description" content="Build your custom Egypt tour with Kemetian Tours — choose your dates, destinations, and travel style, then book directly with our team.">
 <link rel="icon" href="img/favicon-32.png" type="image/png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;700&family=Roboto+Slab:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="fonts/google/outfit.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link rel="stylesheet" href="css/footer.css">
+<link rel="stylesheet" href="css/kt.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --teal:       #2E8B8B;
-  --teal-dark:  #1E6B6B;
-  --teal-light: #EAF5F5;
-  --gold:       #C9A84C;
-  --gold-light: #F5EDD6;
+  --teal:       #1d1912;
+  --teal-dark:  #0c0a07;
+  --teal-light: #f3ead9;
+  --gold:       #b8914f;
+  --gold-light: #f5ecda;
   --white:      #FFFFFF;
-  --bg:         #F7F8F8;
-  --text:       #1C2B2B;
-  --text-mid:   #4A6060;
-  --text-muted: #7A9090;
-  --border:     #D8E6E6;
-  --error:      #D93025;
-  --error-bg:   #FFF0EF;
-  --success:    #1E7B34;
-  --success-bg: #EAF7EE;
-  --radius:     10px;
-  --shadow:     0 2px 16px rgba(46,139,139,0.08);
-  --shadow-card:0 1px 8px rgba(46,139,139,0.07);
+  --bg:         #f5efe4;
+  --text:       #1d1912;
+  --text-mid:   #4a4236;
+  --text-muted: #7a7062;
+  --border:     #e3d8c4;
+  --error:      #C0392B;
+  --error-bg:   #FDF0EE;
+  --success:    #2F7D4F;
+  --success-bg: #EAF5EE;
+  --radius:     14px;
+  --shadow:     0 18px 40px -28px rgba(29,25,18,0.45);
+  --shadow-card:0 10px 30px -24px rgba(29,25,18,0.4);
 }
 
-body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
-/* HEADER */
-header {
-  background: var(--white);
-  border-bottom: 1px solid var(--border);
-  padding: 14px 40px;
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 200;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-.logo-wrap { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-.logo-wrap img { height: 52px; width: auto; }
-header nav a { color: var(--text-mid); text-decoration: none; font-size: 13px; font-weight: 500; margin-left: 28px; transition: color 0.2s; }
-header nav a:hover { color: var(--teal); }
 
 /* HERO */
-.hero {
-  background: linear-gradient(135deg, var(--teal-dark) 0%, var(--teal) 60%, #3AA0A0 100%);
+.bk-hero {
+  background: radial-gradient(ellipse at 80% 20%, #2a2116 0%, var(--teal-dark) 60%);
   padding: 60px 40px 52px; text-align: center; position: relative; overflow: hidden;
 }
-.hero-tag {
+.bk-hero-tag {
   display: inline-block; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9);
   font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
   padding: 5px 16px; border-radius: 20px; margin-bottom: 18px;
 }
-.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(30px,4.5vw,48px); font-weight: 500; color: var(--white); line-height: 1.2; }
-.hero h1 span { color: var(--gold); font-style: italic; }
-.hero p { margin-top: 14px; color: rgba(255,255,255,0.75); font-size: 15px; font-weight: 300; }
+.bk-hero h1 { font-size: clamp(36px,5vw,58px) !important; font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(30px,4.5vw,48px); font-weight: 500; color: var(--white); line-height: 1.2; }
+.bk-hero h1 span { color: var(--gold); font-style: italic; }
+.bk-hero p { margin-top: 14px; color: rgba(255,255,255,0.75); font-size: 15px; font-weight: 300; }
 
 /* PROGRESS */
 .progress-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 40px; }
@@ -99,7 +90,7 @@ header nav a:hover { color: var(--teal); }
 .panel { display: none; }
 .panel.active { display: block; }
 .panel-head { margin-bottom: 24px; }
-.panel-head h2 { font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 5px; }
+.panel-head h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 26px; font-weight: 500; color: var(--text); margin-bottom: 5px; }
 .panel-head p { color: var(--text-muted); font-size: 14px; }
 
 /* VALIDATION ERROR */
@@ -139,7 +130,7 @@ header nav a:hover { color: var(--teal); }
 
 /* DURATION */
 .dur-display { text-align: center; padding: 32px 0 20px; }
-.dur-number { font-family: 'Playfair Display', serif; font-size: 80px; font-weight: 400; color: var(--teal); line-height: 1; }
+.dur-number { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 80px; font-weight: 400; color: var(--teal); line-height: 1; }
 .dur-label { font-size: 12px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
 .range-wrap { padding: 0 4px; margin-bottom: 8px; }
 input[type=range] {
@@ -155,7 +146,7 @@ input[type=range]::-webkit-slider-thumb {
 .presets { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 .preset {
   padding: 7px 18px; border-radius: 20px; border: 1.5px solid var(--border);
-  background: var(--white); font-size: 12px; font-family: 'Inter', sans-serif;
+  background: var(--white); font-size: 12px; font-family: 'Outfit', system-ui, sans-serif;
   color: var(--text-mid); cursor: pointer; transition: all 0.2s;
 }
 .preset:hover, .preset.on { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
@@ -191,13 +182,13 @@ input[type=range]::-webkit-slider-thumb {
 /* DATES & PAX */
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
 .field-box label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; }
-.field-box input, .field-box textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif; color: var(--text); background: var(--white); outline: none; transition: border-color 0.2s; }
+.field-box input, .field-box textarea { width: 100%; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-size: 14px; font-family: 'Outfit', system-ui, sans-serif; color: var(--text); background: var(--white); outline: none; transition: border-color 0.2s; }
 .field-box input:focus, .field-box textarea:focus { border-color: var(--teal); }
 .field-box input.invalid { border-color: var(--error); background: var(--error-bg); }
-.field-box textarea { resize: vertical; min-height: 80px; font-family: 'Inter', sans-serif; }
+.field-box textarea { resize: vertical; min-height: 80px; font-family: 'Outfit', system-ui, sans-serif; }
 .field-box input[type="file"] { padding: 9px 14px; }
 .counter-box { display: flex; align-items: center; background: var(--white); border: 1.5px solid var(--border); border-radius: 8px; overflow: hidden; }
-.cnt-btn { width: 42px; height: 44px; border: none; background: var(--teal-light); color: var(--teal); font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Inter', sans-serif; }
+.cnt-btn { width: 42px; height: 44px; border: none; background: var(--teal-light); color: var(--teal); font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.2s; font-family: 'Outfit', system-ui, sans-serif; }
 .cnt-btn:hover { background: var(--teal); color: white; }
 .cnt-val { flex: 1; text-align: center; font-size: 16px; font-weight: 600; color: var(--text); }
 
@@ -209,7 +200,7 @@ input[type=range]::-webkit-slider-thumb {
 .f-field .req { color: var(--error); }
 .f-field input, .f-field select, .f-field textarea {
   padding: 11px 14px; border: 1.5px solid var(--border); border-radius: 8px;
-  font-size: 14px; font-family: 'Inter', sans-serif; color: var(--text);
+  font-size: 14px; font-family: 'Outfit', system-ui, sans-serif; color: var(--text);
   background: var(--white); outline: none; transition: border-color 0.2s;
 }
 .f-field input:focus, .f-field select:focus, .f-field textarea:focus { border-color: var(--teal); }
@@ -242,7 +233,7 @@ input[type=range]::-webkit-slider-thumb {
 .promo-row { display: flex; gap: 10px; }
 .promo-row input {
   flex: 1; padding: 11px 14px; border: 1.5px solid var(--gold);
-  border-radius: 8px; font-size: 14px; font-family: 'Inter', sans-serif;
+  border-radius: 8px; font-size: 14px; font-family: 'Outfit', system-ui, sans-serif;
   color: var(--text); background: var(--white); outline: none;
   letter-spacing: 0.5px; transition: all 0.2s;
 }
@@ -251,7 +242,7 @@ input[type=range]::-webkit-slider-thumb {
 .btn-promo {
   padding: 11px 22px; border: none; border-radius: 8px;
   background: var(--gold); color: var(--white); font-size: 13px; font-weight: 600;
-  font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; white-space: nowrap;
+  font-family: 'Outfit', system-ui, sans-serif; cursor: pointer; transition: all 0.2s; white-space: nowrap;
 }
 .btn-promo:hover { background: #B0913C; }
 .btn-promo:disabled { background: var(--success); cursor: default; }
@@ -268,20 +259,20 @@ input[type=range]::-webkit-slider-thumb {
 .btn-back {
   padding: 12px 22px; border: 1.5px solid var(--border); border-radius: 8px;
   background: var(--white); color: var(--text-muted); font-size: 14px; font-weight: 500;
-  font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
+  font-family: 'Outfit', system-ui, sans-serif; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s;
 }
 .btn-back:hover { border-color: var(--teal); color: var(--teal); }
 .btn-next {
   flex: 1; padding: 13px 24px; border: none; border-radius: 8px;
   background: var(--teal); color: var(--white); font-size: 14px; font-weight: 600;
-  font-family: 'Inter', sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px;
+  font-family: 'Outfit', system-ui, sans-serif; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 9px;
   transition: all 0.2s; box-shadow: 0 4px 14px rgba(46,139,139,0.3);
 }
 .btn-next:hover { background: var(--teal-dark); transform: translateY(-1px); }
 
 /* SIDEBAR */
 .sidebar-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 24px; box-shadow: var(--shadow); position: sticky; top: 90px; }
-.sidebar-title { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 500; color: var(--text); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.sidebar-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 18px; font-weight: 500; color: var(--text); margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
 .sidebar-title i { color: var(--teal); }
 .sum-row { display: flex; gap: 11px; margin-bottom: 14px; align-items: flex-start; }
 .sum-row .s-ic { width: 32px; height: 32px; border-radius: 8px; background: var(--teal-light); display: grid; place-items: center; color: var(--teal); font-size: 13px; flex-shrink: 0; margin-top: 1px; }
@@ -294,7 +285,7 @@ input[type=range]::-webkit-slider-thumb {
 /* SUCCESS */
 .success-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 56px 40px; text-align: center; box-shadow: var(--shadow); }
 .success-icon-ring { width: 80px; height: 80px; border-radius: 50%; background: var(--teal-light); display: grid; place-items: center; margin: 0 auto 22px; color: var(--teal); font-size: 32px; }
-.success-wrap h2 { font-family: 'Playfair Display', serif; font-size: 30px; font-weight: 500; color: var(--text); margin-bottom: 12px; }
+.success-wrap h2 { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 30px; font-weight: 500; color: var(--text); margin-bottom: 12px; }
 .success-wrap p { color: var(--text-muted); font-size: 15px; line-height: 1.7; max-width: 420px; margin: 0 auto; }
 .success-wrap .btn-next { max-width: 220px; margin: 28px auto 0; }
 .success-promo {
@@ -309,9 +300,7 @@ input[type=range]::-webkit-slider-thumb {
 @media (max-width: 820px) {
   .builder { grid-template-columns: 1fr; }
   .sidebar-card { position: static; }
-  header { padding: 14px 20px; }
-  header nav { display: none; }
-  .hero { padding: 44px 20px 38px; }
+  .bk-hero { padding: 44px 20px 38px; }
   .progress-bar { padding: 0 12px; overflow-x: auto; }
   .steps-row { min-width: 560px; }
   .step-tab .s-label { display: none; }
@@ -323,19 +312,23 @@ input[type=range]::-webkit-slider-thumb {
 </head>
 <body data-page="booking">
 
-<header>
-  <a href="/" class="logo-wrap">
-    <img decoding="async" src="vendor/wp-content/uploads/2026/05/KEMETIAN-LOGO-1024x768.png" alt="Kemetian Tours">
-  </a>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/events">Trips</a>
-    <a href="#">About</a>
-    <a href="/contact">Contact</a>
-  </nav>
+<div id="kt-page-loader" aria-hidden="true"><img src="img/logo-gold.png" alt=""></div>
+<header class="nav solid stuck" id="nav">
+  <div class="wrap">
+    <a class="brand" href="./"><img src="img/logo-gold.png" alt="Kemetian Tours logo" width="48" height="39">KemetianTours</a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="./#destinations">Destinations</a>
+      <a href="events">Events</a>
+      <a href="./#reviews">Reviews</a>
+      <a href="./#faq">FAQ</a>
+      <a href="contact">Contact</a>
+      <a class="btn btn-gold" href="booking">Plan my trip</a>
+    </nav>
+  </div>
 </header>
 
-<div class="hero">
+<div class="bk-hero">
   <div class="hero-tag" data-edit="booking.hero_tag">Tailored Exclusively for You</div>
   <h1 data-edit="booking.hero_heading">Design Your Perfect Egypt Journey</h1>
   <p data-edit="booking.hero_paragraph">Tell us what you dream of — our experts craft every detail from the Pyramids to the Nile.</p>
@@ -1204,6 +1197,13 @@ document.querySelectorAll('[data-dest]').forEach(el => {
   });
 });
 
+// Preselect a destination when arriving from a destination page (?destination=Luxor)
+(function(){
+  var want=new URLSearchParams(location.search).get('destination');
+  if(!want)return;
+  document.querySelectorAll('[data-dest]').forEach(function(el){ if(el.dataset.dest===want && !el.classList.contains('selected')) el.click(); });
+})();
+
 // Duration range
 const durRange = document.getElementById('dur-range');
 if (durRange) {
@@ -1297,31 +1297,27 @@ setDur(7);
 </script>
 
 <footer class="kt-site-footer">
-	<div class="kt-footer-inner">
-		<a href="/" class="kt-footer-logo">
-			<img src="vendor/wp-content/uploads/2026/05/KEMETIAN-LOGO-1024x768.png" alt="KemetianTours">
-			<span>KemetianTours</span>
-		</a>
-		<nav class="kt-footer-links">
-			<a href="/">Home</a>
-			<a href="/events">Upcoming Events</a>
-			<a href="/booking">Book a Tour</a>
-			<a href="/contact">Contact Us</a>
-			<a href="/terms">Terms of Service &amp; Cancellation Policy</a>
-		</nav>
-		<div class="kt-footer-social">
-			<a href="https://www.facebook.com/kemetiantours" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-			<a href="https://www.instagram.com/kemetiantours?igsh=MWdpNWdyc2o2a2xleQ%3D%3D&amp;utm_source=qr" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-			<a href="https://www.tripadvisor.in/Attraction_Review-g60553-d34345306-Reviews-Kemetian_Tours_Egypt-Sheridan_Wyoming.html" target="_blank" rel="noopener" aria-label="TripAdvisor"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="12" cy="12" r="10.3" fill="none" stroke="currentColor" stroke-width="1.3"/><circle cx="7.6" cy="13" r="2.9" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="16.4" cy="13" r="2.9" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="7.6" cy="13" r="1" fill="currentColor"/><circle cx="16.4" cy="13" r="1" fill="currentColor"/><path d="M8.3 9.6 12 7.4 15.7 9.6" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
-			<a href="https://wa.me/201204137431" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
-		</div>
-		<div class="kt-footer-base">All tours depart from Cairo, Egypt &middot; Hotel pickup in Cairo &amp; Giza</div>
-		<div class="kt-footer-divider"></div>
-		<div class="kt-footer-copyright">&copy; 2026 KemetianTours. All rights reserved.</div>
-	</div>
+  <div class="kt-footer-inner">
+    <a href="./" class="kt-footer-logo"><img src="img/logo-gold.png" alt="KemetianTours"><span>KemetianTours</span></a>
+    <nav class="kt-footer-links">
+      <a href="./">Home</a><a href="events">Upcoming Events</a><a href="booking">Book a Tour</a><a href="contact">Contact Us</a><a href="terms">Terms of Service &amp; Cancellation Policy</a>
+    </nav>
+    <div class="kt-footer-social">
+      <a href="https://www.facebook.com/kemetiantours" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+      <a href="https://www.instagram.com/kemetiantours" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="https://www.tripadvisor.co.uk/Attraction_Review-g60553-d34345306-Reviews-Kemetian_Tours_Egypt-Sheridan_Wyoming.html" target="_blank" rel="noopener" aria-label="TripAdvisor"><svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="7.6" cy="13" r="2.9" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="16.4" cy="13" r="2.9" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7.6" cy="13" r="1" fill="currentColor"/><circle cx="16.4" cy="13" r="1" fill="currentColor"/><path d="M3 9.2h3.2M17.8 9.2H21M6.2 9.2C8 7.6 10 7 12 7s4 .6 5.8 2.2" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg></a>
+      <a href="https://wa.me/201204137431" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+    </div>
+    <div class="kt-footer-base">All tours depart from Cairo, Egypt &middot; Hotel pickup in Cairo &amp; Giza</div>
+    <div class="kt-footer-divider"></div>
+    <div class="kt-footer-copyright">&copy; <span data-year>2026</span> KemetianTours. All rights reserved.</div>
+  </div>
 </footer>
 
+<a class="wa-float" href="https://wa.me/201204137431?text=Hi%20Kemetian%20Tours%2C%20I%27d%20like%20to%20plan%20a%20trip%20to%20Egypt." target="_blank" rel="noopener" aria-label="Chat on WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+<script src="js/kt.js"></script>
+<script src="js/site.js"></script>
 <script src="js/content-loader.js" data-base=""></script>
-
 </body>
 </html>
+
