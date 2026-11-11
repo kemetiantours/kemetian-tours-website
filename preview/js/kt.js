@@ -205,7 +205,7 @@ var KT_GA_ID = '';
   }
 
   /* ---------- gallery lightbox (works for galleries added later too) ---------- */
-  var lb=null,lbItems=[],cur=0,lastFocus=null;
+  var lb=null,lbItems=[],cur=0,lastFocus=null,fullCache={};
   function lbBuild(){
     lb=document.createElement('div');lb.className='lb';lb.setAttribute('role','dialog');lb.setAttribute('aria-modal','true');lb.setAttribute('aria-label','Photo viewer');
     lb.innerHTML='<button class="lb-x" aria-label="Close"><i class="fa-solid fa-xmark"></i></button><button class="lb-p" aria-label="Previous photo"><i class="fa-solid fa-arrow-left"></i></button><figure><img alt=""><figcaption></figcaption></figure><button class="lb-n" aria-label="Next photo"><i class="fa-solid fa-arrow-right"></i></button>';
@@ -218,7 +218,12 @@ var KT_GA_ID = '';
     var sx=0;lb.addEventListener('touchstart',function(e){sx=e.touches[0].clientX},{passive:true});
     lb.addEventListener('touchend',function(e){var dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50)lbShow(cur+(dx<0?1:-1))},{passive:true});
   }
-  function lbShow(i){cur=(i+lbItems.length)%lbItems.length;var a=lbItems[cur],im=a.querySelector('img');lb.querySelector('img').src=a.getAttribute('href');lb.querySelector('img').alt=im?im.alt:'';lb.querySelector('figcaption').textContent=a.getAttribute('data-caption')||(im?im.alt:'')}
+  function lbShow(i){
+    cur=(i+lbItems.length)%lbItems.length;var a=lbItems[cur],im=a.querySelector('img'),big=lb.querySelector('img'),id=a.getAttribute('data-media-id');
+    big.src=id?(fullCache[id]||(im?im.src:'')):a.getAttribute('href');
+    big.alt=im?im.alt:'';lb.querySelector('figcaption').textContent=a.getAttribute('data-caption')||'';
+    if(id&&!fullCache[id]&&window.ktMediaFull){var want=cur;window.ktMediaFull(id).then(function(u){if(u){fullCache[id]=u;if(cur===want)big.src=u}})}
+  }
   function lbClose(){lb.classList.remove('on');document.documentElement.style.overflow='';if(lastFocus)lastFocus.focus()}
   document.addEventListener('click',function(e){
     var a=e.target.closest&&e.target.closest('[data-lightbox] a');if(!a)return;
@@ -227,45 +232,60 @@ var KT_GA_ID = '';
     lbShow(lbItems.indexOf(a));lb.classList.add('on');document.documentElement.style.overflow='hidden';lb.querySelector('.lb-x').focus();
   });
 
-  /* ---------- photos managed from the dashboard ----------
-     Firestore document siteContent/media. Fields (all optional):
-       city_<slug>_image    one image URL  -> destination card + destination page header
-       city_<slug>_gallery  list of photos -> destination page gallery
-       gallery_home         list of photos -> homepage "Our travellers" gallery
-     A list is an array of strings, or one string with a photo per line.
-     Each photo is "URL" or "URL | caption".
-     Slugs: giza luxor aswan cairo siwa faiyum dahab white-desert */
-  function mediaList(f){
-    if(!f)return [];
-    var raw=f.arrayValue?(f.arrayValue.values||[]).map(function(v){return v.stringValue||(v.mapValue&&v.mapValue.fields&&v.mapValue.fields.url&&(v.mapValue.fields.url.stringValue+(v.mapValue.fields.caption?' | '+v.mapValue.fields.caption.stringValue:'')))||''}):String(f.stringValue||'').split(/\n+/);
-    return raw.map(function(l){var p=String(l).split('|');return {url:p[0].trim(),caption:(p.slice(1).join('|')||'').trim()}}).filter(function(x){return /^https:\/\//.test(x.url)});
+  /* ---------- photos managed from the Events Admin dashboard (Photos tab) ----------
+     Firestore siteContent/media  -> items: [{id, group, role:'cover'|'gallery', caption, order}]
+     Firestore siteContent/media_<id> -> { thumb, full }   (data URLs or https URLs)
+     group is 'home' (homepage traveller gallery) or a destination slug.
+     Nothing uploaded yet = the built-in photos stay. */
+  function esc(t){var d=document.createElement('div');d.textContent=t==null?'':String(t);return d.innerHTML}
+  var MEDIA=null;
+  function fsBase(c){return 'https://firestore.googleapis.com/v1/projects/'+c.projectId+'/databases/(default)/documents'}
+  function getCfg(){return import(new URL('js/firebase-config.js',document.baseURI).href).then(function(m){return m.firebaseConfig})}
+  function fetchFields(c,ids,field){
+    if(!ids.length)return Promise.resolve({});
+    var root='projects/'+c.projectId+'/databases/(default)/documents/siteContent/media_';
+    var chunks=[];for(var i=0;i<ids.length;i+=40)chunks.push(ids.slice(i,i+40));
+    return Promise.all(chunks.map(function(ch){
+      return fetch(fsBase(c)+':batchGet?key='+c.apiKey,{method:'POST',body:JSON.stringify({documents:ch.map(function(id){return root+id}),mask:{fieldPaths:[field]}})}).then(function(r){return r.ok?r.json():[]});
+    })).then(function(parts){
+      var out={};parts.forEach(function(arr){(arr||[]).forEach(function(x){
+        if(!x.found)return;var id=x.found.name.split('/siteContent/media_')[1],f=x.found.fields&&x.found.fields[field];
+        if(f&&f.stringValue&&/^(data:image\/|https:\/\/)/.test(f.stringValue))out[id]=f.stringValue;
+      })});return out;
+    });
   }
-  function esc(t){var d=document.createElement('div');d.textContent=t||'';return d.innerHTML}
-  function sized(url,w){return url.replace('/image/upload/','/image/upload/f_auto,q_auto,w_'+w+'/').replace(/(f_auto,q_auto,w_\d+\/)+/,'f_auto,q_auto,w_'+w+'/')}
-  function renderGallery(el,items,fallbackAlt){
-    el.innerHTML=items.map(function(it){var alt=it.caption||fallbackAlt;return '<a href="'+esc(sized(it.url,1600))+'" data-caption="'+esc(it.caption)+'"><img src="'+esc(sized(it.url,700))+'" alt="'+esc(alt)+'" loading="lazy"></a>'}).join('');
+  window.ktMediaFull=function(id){return getCfg().then(function(c){return fetchFields(c,[id],'full')}).then(function(m){return m[id]})};
+  function galleryHtml(list,thumbs,alt){
+    return list.filter(function(it){return thumbs[it.id]}).map(function(it){
+      return '<a href="#" data-media-id="'+esc(it.id)+'" data-caption="'+esc(it.caption)+'"><img src="'+esc(thumbs[it.id])+'" alt="'+esc(it.caption||alt)+'" loading="lazy"></a>';
+    }).join('');
   }
-  var needsMedia=document.querySelector('[data-dest-grid],[data-city-hero],[data-city-gallery],[data-media-gallery]');
-  if(needsMedia){
-    import(new URL('js/firebase-config.js',document.baseURI).href).then(function(m){
-      var c=m.firebaseConfig;
-      return fetch('https://firestore.googleapis.com/v1/projects/'+c.projectId+'/databases/(default)/documents/siteContent/media?key='+c.apiKey);
-    }).then(function(r){return r&&r.ok?r.json():null}).then(function(j){
-      var F=(j&&j.fields)||{};
-      D.forEach(function(d){
-        var img=F['city_'+d[0]+'_image']&&F['city_'+d[0]+'_image'].stringValue;
-        if(img&&/^https:\/\//.test(img)){
-          document.querySelectorAll('[data-dest-grid] a[href$="'+d[0]+'"] img').forEach(function(i){i.src=sized(img,900);i.style.objectPosition='50% 50%'});
-          document.querySelectorAll('[data-city-hero="'+d[0]+'"]').forEach(function(h){h.style.backgroundImage="url('"+sized(img,1920)+"')";h.style.backgroundPosition='50% 50%'});
-        }
-        var g=mediaList(F['city_'+d[0]+'_gallery']);
-        if(g.length)document.querySelectorAll('[data-city-gallery="'+d[0]+'"]').forEach(function(el){renderGallery(el,g,d[1]+', Egypt');var s=el.closest('[data-gallery-section]');if(s)s.hidden=false});
+  var wantCards=document.querySelector('[data-dest-grid]'),heroEl=document.querySelector('[data-city-hero]'),
+      cityGal=document.querySelector('[data-city-gallery]'),homeGal=document.querySelector('[data-media-gallery]');
+  if(wantCards||heroEl||cityGal||homeGal){
+    getCfg().then(function(c){
+      return fetch(fsBase(c)+'/siteContent/media?key='+c.apiKey).then(function(r){return r.ok?r.json():null}).then(function(j){
+        var arr=j&&j.fields&&j.fields.items&&j.fields.items.arrayValue&&j.fields.items.arrayValue.values||[];
+        MEDIA=arr.map(function(v){var f=(v.mapValue&&v.mapValue.fields)||{},g=function(k){return f[k]&&(f[k].stringValue!=null?f[k].stringValue:f[k].integerValue!=null?Number(f[k].integerValue):f[k].doubleValue)};
+          return {id:g('id'),group:g('group'),role:g('role'),caption:g('caption')||'',order:Number(g('order')||0)}}).filter(function(x){return x.id&&x.group});
+        MEDIA.sort(function(a,b){return a.order-b.order});
+        if(!MEDIA.length)return;
+        var covers={};MEDIA.forEach(function(m){if(m.role==='cover')covers[m.group]=m});
+        var thumbIds=[],fullIds=[];
+        if(wantCards)D.forEach(function(d){if(covers[d[0]])thumbIds.push(covers[d[0]].id)});
+        var heroSlug=heroEl&&heroEl.getAttribute('data-city-hero');if(heroSlug&&covers[heroSlug])fullIds.push(covers[heroSlug].id);
+        var galSlug=cityGal&&cityGal.getAttribute('data-city-gallery'),cityList=galSlug?MEDIA.filter(function(m){return m.group===galSlug&&m.role==='gallery'}):[];
+        var homeList=homeGal?MEDIA.filter(function(m){return m.group==='home'&&m.role==='gallery'}):[];
+        cityList.concat(homeList).forEach(function(m){thumbIds.push(m.id)});
+        return Promise.all([fetchFields(c,thumbIds,'thumb'),fetchFields(c,fullIds,'full')]).then(function(res){
+          var thumbs=res[0],fulls=res[1];
+          if(wantCards)D.forEach(function(d){var cv=covers[d[0]];if(cv&&thumbs[cv.id])document.querySelectorAll('[data-dest-grid] a[href$="'+d[0]+'"] img').forEach(function(i){i.src=thumbs[cv.id];i.style.objectPosition='50% 50%'})});
+          if(heroSlug&&covers[heroSlug]&&fulls[covers[heroSlug].id]){heroEl.style.backgroundImage="url('"+fulls[covers[heroSlug].id]+"')";heroEl.style.backgroundPosition='50% 50%'}
+          if(cityGal&&cityList.length){var h=galleryHtml(cityList,thumbs,'Egypt');if(h){cityGal.innerHTML=h;var s=cityGal.closest('[data-gallery-section]');if(s)s.hidden=false}}
+          if(homeGal&&homeList.length){var h2=galleryHtml(homeList,thumbs,'Kemetian Tours travellers in Egypt');if(h2){homeGal.innerHTML=h2;var s2=homeGal.closest('[data-gallery-section]');if(s2){s2.hidden=false;s2.querySelectorAll('.reveal').forEach(function(x){x.classList.add('in')})}}}
+        });
       });
-      document.querySelectorAll('[data-media-gallery]').forEach(function(el){
-        var g=mediaList(F[el.getAttribute('data-media-gallery')]);
-        if(g.length){renderGallery(el,g,'Kemetian Tours travellers in Egypt');var s=el.closest('[data-gallery-section]');if(s){s.hidden=false;s.querySelectorAll('.reveal').forEach(function(x){x.classList.add('in')})}}
-      });
-    }).catch(function(e){console.error('media: could not load photos',e)});
+    }).catch(function(e){console.error('photos: could not load',e)});
   }
 
   /* ---------- reveal on scroll ---------- */
