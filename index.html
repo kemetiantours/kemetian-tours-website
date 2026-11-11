@@ -176,7 +176,7 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
 /* video backgrounds */
 .vbg{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
 .vbg .poster{position:absolute;inset:0;background:center/cover;animation:kenburns 24s ease-in-out infinite alternate}
-.vbg iframe,.vbg>div:not(.poster){position:absolute;top:50%;left:50%;width:max(130vw,231vh);height:max(73.2vw,130vh);transform:translate(-50%,-50%);border:0;opacity:0;transition:opacity 1.6s ease}
+.vbg iframe,.vbg>div:not(.poster){position:absolute;top:50%;left:50%;width:max(100%,177.78vh);height:max(56.25vw,100%);min-width:100%;min-height:100%;aspect-ratio:16/9;transform:translate(-50%,-50%);border:0;opacity:0;transition:opacity 1.6s ease}
 .vbg{background:#000}
 .vbg.playing iframe{opacity:1}
 .vbg.playing .poster{opacity:0;transition:opacity 1.6s ease}
