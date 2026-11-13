@@ -4,7 +4,7 @@
 /* ---------- Analytics (Google Analytics 4) ----------
    Paste your Measurement ID (looks like "G-ABC123XYZ") between the quotes to
    switch tracking on for the whole site. Leave it empty to keep it off. */
-var KT_GA_ID = '';
+var KT_GA_ID = 'G-DJSHP3TE47';
 
 (function(){
   var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
