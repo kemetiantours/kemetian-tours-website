@@ -186,6 +186,7 @@ function renderEvent(event) {
           </label>
           <div id="rb-error" class="error-text" hidden></div>
           <button type="submit" id="rb-submit">Send Booking Request</button>
+          <p class="rb-legal" style="font-size:.8rem;opacity:.75;margin-top:10px">By sending this form you agree to our <a href="terms">Terms</a> and <a href="privacy">Privacy Policy</a>.</p>
         </form>
         <div id="booking-success" class="booking-success" hidden>
           &#10003; Thanks! Your booking request was sent - we'll get back to you within 24 hours.
@@ -217,6 +218,8 @@ function renderEvent(event) {
           <a href="booking.html">Book a Tour</a>
           <a href="contact.html">Contact Us</a>
           <a href="terms.html">Terms of Service &amp; Cancellation Policy</a>
+          <a href="privacy">Privacy Policy</a>
+          <a href="#" data-cookie-settings>Cookie Settings</a>
         </nav>
         <div class="kt-footer-social">
           <a href="https://www.facebook.com/kemetiantours" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
@@ -225,7 +228,7 @@ function renderEvent(event) {
           <a href="https://wa.me/201204137431" target="_blank" rel="noopener" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
         </div>
         <div class="kt-footer-divider"></div>
-        <div class="kt-footer-copyright">&copy; 2026 KemetianTours. All rights reserved.</div>
+        <div class="kt-footer-copyright">&copy; 2026 Kemetian Tours LLC &middot; 30 N Gould St, Ste R, Sheridan, WY 82801, USA &middot; <a href="mailto:Bookings@kemetiantours.com">Bookings@kemetiantours.com</a></div>
       </div>
     </footer>
   `;
