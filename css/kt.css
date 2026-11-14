@@ -262,9 +262,14 @@ details p{padding:0 0 22px;color:var(--muted);max-width:62ch}
   .dest.wide{grid-column:span 2}
   .steps{grid-template-columns:1fr 1fr;row-gap:20px}
   .pillars{grid-template-columns:1fr 1fr}
-  .nav-links{position:fixed;inset:0;background:var(--night);flex-direction:column;justify-content:center;font-size:1.3rem;gap:28px;opacity:0;visibility:hidden;transition:.3s}
+  .nav-links{position:fixed;inset:0;height:100dvh;background:var(--night);flex-direction:column;justify-content:center;font-size:1.3rem;gap:28px;padding:96px 24px 48px;overflow-y:auto;overscroll-behavior:contain;opacity:0;visibility:hidden;transition:.3s}
   .nav-links.open{opacity:1;visibility:visible}
-  .burger{display:block;position:relative;z-index:2}
+  /* the blur on the scrolled header traps position:fixed children inside the header bar — drop it while the menu is open */
+  .nav.menu-open,.nav.solid.menu-open,.nav.stuck.menu-open{backdrop-filter:none;-webkit-backdrop-filter:none;z-index:100}
+  .burger{display:flex;align-items:center;justify-content:center;width:48px;height:48px;margin-right:-8px;font-size:1.7rem;border-radius:50%;position:relative;z-index:2;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .burger:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+  .burger svg{display:block}
+  .nav.menu-open .burger{position:fixed;top:calc(10px + env(safe-area-inset-top));right:16px;z-index:3}
 }
 @media (max-width:560px){
   .wrap{padding:0 16px}

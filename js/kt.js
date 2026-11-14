@@ -67,11 +67,16 @@ var KT_GA_ID = 'G-DJSHP3TE47';
   }
   if(burger&&links){
     burger.addEventListener('click',function(){
-      var o=links.classList.toggle('open');burger.setAttribute('aria-expanded',o);
-      burger.innerHTML=o?'<i class="fa-solid fa-xmark"></i>':'<i class="fa-solid fa-bars"></i>';
+      var top=burger.getBoundingClientRect().top;
+      var o=links.classList.toggle('open');
+      burger.style.top=o?Math.max(top,8)+'px':'';burger.setAttribute('aria-expanded',o);
+      burger.setAttribute('aria-label',o?'Close menu':'Open menu');
+      if(nav)nav.classList.toggle('menu-open',o);
+      burger.innerHTML=o?'<svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>':'<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>';
       document.documentElement.style.overflow=o?'hidden':'';
     });
-    links.addEventListener('click',function(e){if(e.target.closest('a')&&links.classList.contains('open'))burger.click()});
+    links.addEventListener('click',function(e){if(links.classList.contains('open')&&(e.target.closest('a')||e.target===links))burger.click()});
+    document.addEventListener('keydown',function(e){if(e.key==='Escape'&&links.classList.contains('open'))burger.click()});
   }
 
   /* ---------- scroll cue: hide after scrolling a little, show again at the top ---------- */
